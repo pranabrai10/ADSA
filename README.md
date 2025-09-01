@@ -153,44 +153,35 @@ Otherwise → return “none.”
 
 At each step, we reduce the problem size by half, performing one weighing.
 
-𝑇(𝑛)=𝑇(𝑛2)+𝑐
 T(n)=T(2n)+c
 Expansion
 𝑇(𝑛)=𝑇(𝑛/2)+𝑐
     =𝑇(𝑛/4)+2𝑐
     =𝑇(𝑛/8)+3𝑐
-T(n)=T(n/2)+c=T(n/4)+2c=T(n/8)+3c
-    =𝑇(𝑛/2𝑘)+𝑘𝑐
-    =T(n/2k)+kc
 
+    =𝑇(𝑛/2𝑘)+𝑘𝑐
+  
 Stop when 
 𝑛/2𝑘=1⇒𝑘=log2𝑛n/2k=1⇒k=log2n.
 
 𝑇(𝑛)=𝑇(1)+𝑐⋅log2𝑛
-T(n)=T(1)+c⋅log2n
 
 Since 
-𝑇(1)=𝑂(1)
-T(1)=O(1):
-
+𝑇(1)=𝑂(1):
 𝑇(𝑛)=𝑂(log2𝑛)+𝑂(1)
-T(n)=O(log2n)+O(1)
 
 Adding the final verification step (+c), we get:
 
 𝑇(𝑛)=𝑂(log2𝑛+𝑐)
-T(n)=O(log2n+c)
+
 4. Complexity Analysis
 
 Time Complexity: 
 𝑂(log2𝑛+𝑐)
-O(log2n+c)
 
 Space Complexity: 
-𝑂(log2𝑛)O(log2n) 
-due to recursion stack (can be reduced to 
-𝑂(1)
-O(1) if implemented iteratively).
+𝑂(log2𝑛)
+due to recursion stack (can be reduced to O(1) if implemented iteratively).
 
 5. Dry Run Example
 
@@ -206,4 +197,6 @@ Verification: Compare 9 with a known good coin (10). Since 9 < 10 → defective 
 
 Output:
 
-Defective coin is at position 3.
+Defective coin is at position 3.(0 based index)
+<img width="768" height="477" alt="image" src="https://github.com/user-attachments/assets/d7f72b7b-eb72-495f-9e64-8a451e6b7cbe" />
+
