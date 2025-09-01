@@ -74,6 +74,8 @@ Implementation	Iterative	Recursive
 
 Conclusion: Even though ternary search reduces the range faster (log₃ n vs log₂ n), it does two comparisons per step, making it slower in practice.
 Binary Search is more efficient.
+<img width="1920" height="995" alt="Screenshot (29)" src="https://github.com/user-attachments/assets/cce0ce0c-2653-4a06-8a8a-eec6a4022aab" />
+
 
 3. DETERMINING IF A COIN IS LIGHTER OR NOT
 
