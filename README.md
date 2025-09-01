@@ -1,13 +1,6 @@
 1. INCREASING ORDER OF GROWTH
   
-  1. Purpose
-This program compares the growth rates of 12 mathematical functions commonly encountered in algorithm complexity analysis.
-It evaluates them for multiple values of 
-𝑛
-n (2,4,8,…,1024), prints their values, and shows the order of growth for each 𝑛.
-At the end, it also groups functions that have the same asymptotic complexity (Θ).
-
-2. List of Functions
+List of Functions
 
 The program compares the following 12 functions:
 
@@ -24,218 +17,17 @@ f2(n)=log2(n)
 𝑓11(𝑛)=𝑛log2(𝑛)
 𝑓12(𝑛)=3^𝑛
 
-3. Approach
-
-Loop over 
-n=2,4,8,…,1024
-
-Each function is computed and stored.
-
-Print function values
-
-For each 
-𝑛
-n, the program prints the 12 values in scientific notation (%.3e) to handle very large numbers.
-
-Sort functions by their values
-
-A bubble-sort based function sortFunctions() is used to sort the functions in ascending order.
-
-Print the growth order
-
-Functions are displayed in increasing order of their values.
-Example:
-
-1/n < log2(n) < 12*sqrt(n) < ...
-
-
-Print asymptotic Θ-equivalent groups
-
-Functions that belong to the same asymptotic growth class are explicitly grouped:
-
-Θ(√n): 12*sqrt(n), 50*n^0.5
-
-Θ(n²): n² - 324, 100n² + 6n
-
-Θ(n): 2^32 * n (same linear growth, different constant)
-
-4. Output
-   Comparison of 12 functions for n = 2,4,8,...,1024
-
-n = 2
-1/n             = 5.000e-001
-log2(n)         = 1.000e+000
-n*log2(n)       = 2.000e+000
-12*sqrt(n)      = 1.697e+001
-50*n^0.5        = 7.071e+001
-n^0.51          = 1.424e+000
-n^2 - 324       = -3.200e+002
-100n^2 + 6n     = 4.120e+002
-2n^3            = 1.600e+001
-2^32 * n        = 8.590e+009
-n^log2(n)       = 2.000e+000
-3^n             = 9.000e+000
-
-Sorted order at n=2:
-n^2 - 324 < 1/n < log2(n) < n^0.51 < n*log2(n) < n^log2(n) < 3^n < 2n^3 < 12*sqrt(n) < 50*n^0.5 < 100n^2 + 6n < 2^32 * n
-
-n = 4
-1/n             = 2.500e-001
-log2(n)         = 2.000e+000
-n*log2(n)       = 8.000e+000
-12*sqrt(n)      = 2.400e+001
-50*n^0.5        = 1.000e+002
-n^0.51          = 2.028e+000
-n^2 - 324       = -3.080e+002
-100n^2 + 6n     = 1.624e+003
-2n^3            = 1.280e+002
-2^32 * n        = 1.718e+010
-n^log2(n)       = 1.600e+001
-3^n             = 8.100e+001
-
-Sorted order at n=4:
-n^2 - 324 < 1/n < log2(n) < n^0.51 < n*log2(n) < n^log2(n) < 12*sqrt(n) < 3^n < 50*n^0.5 < 2n^3 < 100n^2 + 6n < 2^32 * n
-
-n = 8
-1/n             = 1.250e-001
-log2(n)         = 3.000e+000
-n*log2(n)       = 2.400e+001
-12*sqrt(n)      = 3.394e+001
-50*n^0.5        = 1.414e+002
-n^0.51          = 2.888e+000
-n^2 - 324       = -2.600e+002
-100n^2 + 6n     = 6.448e+003
-2n^3            = 1.024e+003
-2^32 * n        = 3.436e+010
-n^log2(n)       = 5.120e+002
-3^n             = 6.561e+003
-
-Sorted order at n=8:
-n^2 - 324 < 1/n < n^0.51 < log2(n) < n*log2(n) < 12*sqrt(n) < 50*n^0.5 < n^log2(n) < 2n^3 < 100n^2 + 6n < 3^n < 2^32 * n
-
-n = 16
-1/n             = 6.250e-002
-log2(n)         = 4.000e+000
-n*log2(n)       = 6.400e+001
-12*sqrt(n)      = 4.800e+001
-50*n^0.5        = 2.000e+002
-n^0.51          = 4.112e+000
-n^2 - 324       = -6.800e+001
-100n^2 + 6n     = 2.570e+004
-2n^3            = 8.192e+003
-2^32 * n        = 6.872e+010
-n^log2(n)       = 6.554e+004
-3^n             = 4.305e+007
-
-Sorted order at n=16:
-n^2 - 324 < 1/n < log2(n) < n^0.51 < 12*sqrt(n) < n*log2(n) < 50*n^0.5 < 2n^3 < 100n^2 + 6n < n^log2(n) < 3^n < 2^32 * n
-
-n = 32
-1/n             = 3.125e-002
-log2(n)         = 5.000e+000
-n*log2(n)       = 1.600e+002
-12*sqrt(n)      = 6.788e+001
-50*n^0.5        = 2.828e+002
-n^0.51          = 5.856e+000
-n^2 - 324       = 7.000e+002
-100n^2 + 6n     = 1.026e+005
-2n^3            = 6.554e+004
-2^32 * n        = 1.374e+011
-n^log2(n)       = 3.355e+007
-3^n             = 1.853e+015
-
-Sorted order at n=32:
-1/n < log2(n) < n^0.51 < 12*sqrt(n) < n*log2(n) < 50*n^0.5 < n^2 - 324 < 2n^3 < 100n^2 + 6n < n^log2(n) < 2^32 * n < 3^n
-
-n = 64
-1/n             = 1.563e-002
-log2(n)         = 6.000e+000
-n*log2(n)       = 3.840e+002
-12*sqrt(n)      = 9.600e+001
-50*n^0.5        = 4.000e+002
-n^0.51          = 8.340e+000
-n^2 - 324       = 3.772e+003
-100n^2 + 6n     = 4.100e+005
-2n^3            = 5.243e+005
-2^32 * n        = 2.749e+011
-n^log2(n)       = 6.872e+010
-3^n             = 3.434e+030
-
-Sorted order at n=64:
-1/n < log2(n) < n^0.51 < 12*sqrt(n) < n*log2(n) < 50*n^0.5 < n^2 - 324 < 100n^2 + 6n < 2n^3 < n^log2(n) < 2^32 * n < 3^n
-
-n = 128
-1/n             = 7.813e-003
-log2(n)         = 7.000e+000
-n*log2(n)       = 8.960e+002
-12*sqrt(n)      = 1.358e+002
-50*n^0.5        = 5.657e+002
-n^0.51          = 1.188e+001
-n^2 - 324       = 1.606e+004
-100n^2 + 6n     = 1.639e+006
-2n^3            = 4.194e+006
-2^32 * n        = 5.498e+011
-n^log2(n)       = 5.629e+014
-3^n             = 1.179e+061
-
-Sorted order at n=128:
-1/n < log2(n) < n^0.51 < 12*sqrt(n) < 50*n^0.5 < n*log2(n) < n^2 - 324 < 100n^2 + 6n < 2n^3 < 2^32 * n < n^log2(n) < 3^n
-
-n = 256
-1/n             = 3.906e-003
-log2(n)         = 8.000e+000
-n*log2(n)       = 2.048e+003
-12*sqrt(n)      = 1.920e+002
-50*n^0.5        = 8.000e+002
-n^0.51          = 1.691e+001
-n^2 - 324       = 6.521e+004
-100n^2 + 6n     = 6.555e+006
-2n^3            = 3.355e+007
-2^32 * n        = 1.100e+012
-n^log2(n)       = 1.845e+019
-3^n             = 1.390e+122
-
-Sorted order at n=256:
-1/n < log2(n) < n^0.51 < 12*sqrt(n) < 50*n^0.5 < n*log2(n) < n^2 - 324 < 100n^2 + 6n < 2n^3 < 2^32 * n < n^log2(n) < 3^n
-
-n = 512
-1/n             = 1.953e-003
-log2(n)         = 9.000e+000
-n*log2(n)       = 4.608e+003
-12*sqrt(n)      = 2.715e+002
-50*n^0.5        = 1.131e+003
-n^0.51          = 2.408e+001
-n^2 - 324       = 2.618e+005
-100n^2 + 6n     = 2.622e+007
-2n^3            = 2.684e+008
-2^32 * n        = 2.199e+012
-n^log2(n)       = 2.418e+024
-3^n             = 1.932e+244
-
-Sorted order at n=512:
-1/n < log2(n) < n^0.51 < 12*sqrt(n) < 50*n^0.5 < n*log2(n) < n^2 - 324 < 100n^2 + 6n < 2n^3 < 2^32 * n < n^log2(n) < 3^n
-
-n = 1024
-1/n             = 9.766e-004
-log2(n)         = 1.000e+001
-n*log2(n)       = 1.024e+004
-12*sqrt(n)      = 3.840e+002
-50*n^0.5        = 1.600e+003
-n^0.51          = 3.430e+001
-n^2 - 324       = 1.048e+006
-100n^2 + 6n     = 1.049e+008
-2n^3            = 2.147e+009
-2^32 * n        = 4.398e+012
-n^log2(n)       = 1.268e+030
-3^n             = 1.#IOe+000
 
 Sorted order at n=1024:
 1/n < log2(n) < n^0.51 < 12*sqrt(n) < 50*n^0.5 < n*log2(n) < n^2 - 324 < 100n^2 + 6n < 2n^3 < 2^32 * n < n^log2(n) < 3^n
 
-Asymptotic T-equivalent groups:
-T(sqrt(n)):  12*sqrt(n), 50*n^0.5
-T(n^2):      n^2 - 324, 100n^2 + 6n
-T(n):        n*log2(n) is bigger than n, but 2^32*n is also T(n)
+Θ-equivalent function pairs
+
+Θ(√n): 12√n , 50√n
+Θ(n²): n² − 324 , 100n² + 6n
+
+All the other functions are unique and do not have a Θ-pair in this list.
+<img width="1920" height="995" alt="Screenshot (27)" src="https://github.com/user-attachments/assets/eaf6ce95-f32e-48cb-b457-baaec6c2b6e8" />
 
 
 2. TERNARY SEARCH
