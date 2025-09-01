@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+
+#define NUM_FUNCS 12
+#define MAX_NAME 50
+
+// Structure for function
+typedef struct {
+    char name[MAX_NAME];
+    double value;
+} Function;
+
+// Function to compare two values (for sorting)
+void sortFunctions(Function funcs[], int n) {
+    int i, j;
+    for (i = 0; i < NUM_FUNCS - 1; i++) {
+        for (j = i + 1; j < NUM_FUNCS; j++) {
+            if (funcs[i].value > funcs[j].value) {
+                Function temp = funcs[i];
+                funcs[i] = funcs[j];
+                funcs[j] = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    int n;
+    int i;
+
+    printf("Comparison of 12 functions for n = 2,4,8,...,1024\n\n");
+
+    for (n = 2; n <= 1024; n *= 2) {
+        Function funcs[NUM_FUNCS];
+
+        // Define functions
+        strcpy(funcs[0].name, "1/n");
+        funcs[0].value = 1.0 / n;
+
+        strcpy(funcs[1].name, "log2(n)");
+        funcs[1].value = log2(n);
+
+        strcpy(funcs[2].name, "n*log2(n)");
+        funcs[2].value = n * log2(n);
+
+        strcpy(funcs[3].name, "12*sqrt(n)");
+        funcs[3].value = 12 * sqrt(n);
+
+        strcpy(funcs[4].name, "50*n^0.5");
+        funcs[4].value = 50 * pow(n, 0.5);
+
+        strcpy(funcs[5].name, "n^0.51");
+        funcs[5].value = pow(n, 0.51);
+
+        strcpy(funcs[6].name, "n^2 - 324");
+        funcs[6].value = pow(n, 2) - 324;
+
+        strcpy(funcs[7].name, "100n^2 + 6n");
+        funcs[7].value = 100 * pow(n, 2) + 6 * n;
+
+        strcpy(funcs[8].name, "2n^3");
+        funcs[8].value = 2 * pow(n, 3);
+
+        strcpy(funcs[9].name, "2^32 * n");
+        funcs[9].value = pow(2, 32) * n;
+
+        strcpy(funcs[10].name, "n^log2(n)");
+        funcs[10].value = pow(n, log2(n));
+
+        strcpy(funcs[11].name, "3^n");
+        funcs[11].value = pow(3, n); // careful: grows very fast
+
+        // Print values
+        printf("n = %d\n", n);
+        for (i = 0; i < NUM_FUNCS; i++) {
+            printf("%-15s = %.3e\n", funcs[i].name, funcs[i].value);
+        }
+
+        // Sort by value
+        sortFunctions(funcs, NUM_FUNCS);
+
+        // Print sorted order
+        printf("\nSorted order at n=%d:\n", n);
+        for (i = 0; i < NUM_FUNCS; i++) {
+            printf("%s", funcs[i].name);
+            if (i < NUM_FUNCS - 1) printf(" < ");
+        }
+        printf("\n\n");
+    }
+
+    // Explicit asymptotic T pairs
+    printf("Asymptotic T-equivalent groups:\n");
+    printf("T(sqrt(n)):  12*sqrt(n), 50*n^0.5\n");
+    printf("T(n^2):      n^2 - 324, 100n^2 + 6n\n");
+    printf("T(n):        n*log2(n) is bigger than n, but 2^32*n is also T(n)\n");
+
+    return 0;
+}
