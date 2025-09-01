@@ -240,99 +240,48 @@ T(n):        n*log2(n) is bigger than n, but 2^32*n is also T(n)
 
 2. TERNARY SEARCH
 
-1. Introduction
+Functions Used
 
-Searching is one of the most fundamental operations in computer science.
-Two well-known searching techniques for sorted arrays are Binary Search and Ternary Search.
+binarySearch(int arr[], int n, int key)
 
-Binary Search divides the array into two halves.
+Iterative function.
 
-Ternary Search divides the array into three parts.
+Divides the array into two halves each step.
 
-The purpose of this project is to design, implement, and compare these two algorithms in terms of efficiency.
+Makes 1 comparison per iteration (with arr[mid]).
 
-2. Algorithms
-2.1 Binary Search
+Returns the index if key is found, else -1.
 
-Given a sorted array of size n, Binary Search:
+ternarySearch(int arr[], int l, int r, int key)
 
-Compares the key with the middle element.
+Recursive function.
 
-If equal → return index.
+Divides the array into three parts using two midpoints (mid1, mid2).
 
-If key < middle → search left half.
+Makes 2 comparisons per recursive call (arr[mid1] and arr[mid2]).
 
-Else → search right half.
+Returns the index if key is found, else -1.
 
-Recurrence relation:
+main()
 
-𝑇(𝑛)=𝑇(𝑛/2)+𝑂(1)
-T(n)=T(n/2)+O(1)
+Generates sorted arrays of different sizes.
 
-Time Complexity:
+Calls both search functions.
 
-𝑂(log2𝑛)O(log2n)
+Counts and compares the number of comparisons.
 
-2. Ternary Search
+Saves results in output.dat and plots using gnuplot.
 
-Given a sorted array of size n, Ternary Search:
+Binary Search vs Ternary Search
+Feature	                 Binary Search	              Ternary Search
+Division	                 2 parts	                     3 parts
+Comparisons per step	       1	                           2
+Time Complexity	           O(log₂ n)	                  O(log₃ n)
+Practical Performance	Faster (fewer comparisons)	Slower (more comparisons)
+Implementation	Iterative	Recursive
 
-Computes two midpoints:
-
-𝑚𝑖𝑑1=𝑙+(𝑟−𝑙)/3,
-𝑚𝑖𝑑2=𝑟−(𝑟−𝑙)/3
-mid1=l+(r−l)/3,mid2=r−(r−l)/3
-
-Compares the key with arr[mid1] and arr[mid2].
-
-Decides which of the three parts to continue searching.
-
-Recurrence relation:
-
-𝑇(𝑛)=𝑇(𝑛/3)+𝑂(1)
-T(n)=T(n/3)+O(1)
-
-Time Complexity:
-
-𝑂(log3𝑛)
-O(log3n)
-However, each step requires two comparisons, making ternary search slower in practice.
-
-3.Output Data
-
-The program writes results to output.dat in the format:
-
-n  BinaryComparisons  TernaryComparisons
-
-
-Example:
-
-10 4 4
-100 7 8
-1000 10 12
-10000 14 17
-100000 17 21
-
-4. Experimental Results
-4.1 Observed Comparisons
-n	Binary	Ternary
-10	4	4
-100	7	8
-1,000	10	12
-10,000	14	17
-100,000	17	21
-4.2 Analysis
-
-Binary search comparisons grow like log2(𝑛)log2(n).
-
-Ternary search comparisons grow like 
-2⋅log3(𝑛)
-2⋅log3(n).
-
-For small n, both are similar.
-
-For large n, binary search is consistently better.
-
+Conclusion: Even though ternary search reduces the range faster (log₃ n vs log₂ n), it does two comparisons per step, making it slower in practice.
+Binary Search is more efficient.
 
 3. DETERMINING IF A COIN IS LIGHTER OR NOT
 
