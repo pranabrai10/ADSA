@@ -1,0 +1,5 @@
+n=10 -> Binary=4, Ternary=4
+n=100 -> Binary=7, Ternary=8
+n=1000 -> Binary=10, Ternary=12
+n=10000 -> Binary=14, Ternary=17
+n=100000 -> Binary=17, Ternary=21
