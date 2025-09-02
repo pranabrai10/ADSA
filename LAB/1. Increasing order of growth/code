@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+
+#define NUM_FUNCS 12
+#define MAX_NAME 50
+#define MAX_N 1024
+
+// Structure for function
+typedef struct {
+    char name[MAX_NAME];
+    double value;
+} Function;
+
+int main() {
+    int n;
+    FILE *fp;
+
+    // Open file to write data
+    fp = fopen("functions.dat", "w");
+    if (!fp) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+
+    // Print header row (function names)
+    fprintf(fp, "n\t1/n\tlog2(n)\tnlog2n\t12sqrt(n)\t50sqrt(n)\tn^0.51\tn^2-324\t100n^2+6n\t2n^3\t2^32*n\tn^log2(n)\t3^n\n");
+
+    for (n = 2; n <= MAX_N; n *= 2) {
+        fprintf(fp, "%d\t", n);
+
+        fprintf(fp, "%e\t", 1.0 / n);
+        fprintf(fp, "%e\t", log2(n));
+        fprintf(fp, "%e\t", n * log2(n));
+        fprintf(fp, "%e\t", 12 * sqrt(n));
+        fprintf(fp, "%e\t", 50 * pow(n, 0.5));
+        fprintf(fp, "%e\t", pow(n, 0.51));
+        fprintf(fp, "%e\t", pow(n, 2) - 324);
+        fprintf(fp, "%e\t", 100 * pow(n, 2) + 6 * n);
+        fprintf(fp, "%e\t", 2 * pow(n, 3));
+        fprintf(fp, "%e\t", pow(2, 32) * n);
+        fprintf(fp, "%e\t", pow(n, log2(n)));
+        fprintf(fp, "%e\n", pow(3, n));
+    }
+
+    fclose(fp);
+
+    // Now create a gnuplot script and run it
+    FILE *gp = popen("gnuplot -persistent", "w");
+    if (gp) {
+        fprintf(gp, "set logscale y\n");  // log scale to fit big values
+        fprintf(gp, "set title 'Comparison of 12 Functions'\n");
+        fprintf(gp, "set xlabel 'n'\n");
+        fprintf(gp, "set ylabel 'Function values (log scale)'\n");
+        fprintf(gp, "plot ");
+        fprintf(gp, "'functions.dat' using 1:2 with lines title '1/n', ");
+        fprintf(gp, "'functions.dat' using 1:3 with lines title 'log2(n)', ");
+        fprintf(gp, "'functions.dat' using 1:4 with lines title 'n*log2(n)', ");
+        fprintf(gp, "'functions.dat' using 1:5 with lines title '12*sqrt(n)', ");
+        fprintf(gp, "'functions.dat' using 1:6 with lines title '50*sqrt(n)', ");
+        fprintf(gp, "'functions.dat' using 1:7 with lines title 'n^0.51', ");
+        fprintf(gp, "'functions.dat' using 1:8 with lines title 'n^2-324', ");
+        fprintf(gp, "'functions.dat' using 1:9 with lines title '100n^2+6n', ");
+        fprintf(gp, "'functions.dat' using 1:10 with lines title '2n^3', ");
+        fprintf(gp, "'functions.dat' using 1:11 with lines title '2^32*n', ");
+        fprintf(gp, "'functions.dat' using 1:12 with lines title 'n^log2(n)', ");
+        fprintf(gp, "'functions.dat' using 1:13 with lines title '3^n'\n");
+        fflush(gp);
+    } else {
+        printf("Could not open gnuplot. Please install gnuplot.\n");
+    }
+
+    // Explicit Θ-equivalence pairs
+    printf("\nExplicit Θ-equivalent function pairs:\n");
+    printf("Θ(√n):        12*sqrt(n), 50*n^0.5\n");
+    printf("Θ(n^2):       n^2 - 324, 100n^2 + 6n\n");
+
+    printf("\nOther functions are asymptotically unique in this set and the order is:\n");
+    printf("1/n, log2(n), n*log2(n), n^0.51, 2n^3, 2^32*n, n^log2(n), 3^n\n");
+
+    return 0;
+}
