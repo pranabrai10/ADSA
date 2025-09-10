@@ -1,0 +1,218 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+static inline int max(int a, int b) { return a > b ? a : b; }
+
+static int next_pow2(int n) {
+    int p = 1;
+    while (p < n) p <<= 1;
+    return p;
+}
+
+// Element-wise add: R = X + Y  (n x n blocks with given leading dims)
+static void add_block(const int *X, int ldX, const int *Y, int ldY, int *R, int ldR, int n) {
+    for (int i = 0; i < n; ++i) {
+        const int *xrow = X + i * ldX;
+        const int *yrow = Y + i * ldY;
+        int *rrow = R + i * ldR;
+        for (int j = 0; j < n; ++j) rrow[j] = xrow[j] + yrow[j];
+    }
+}
+
+// Element-wise sub: R = X - Y
+static void sub_block(const int *X, int ldX, const int *Y, int ldY, int *R, int ldR, int n) {
+    for (int i = 0; i < n; ++i) {
+        const int *xrow = X + i * ldX;
+        const int *yrow = Y + i * ldY;
+        int *rrow = R + i * ldR;
+        for (int j = 0; j < n; ++j) rrow[j] = xrow[j] - yrow[j];
+    }
+}
+
+// Naive multiply: C = A * B (n x n, with leading dims)
+static void mul_naive(const int *A, int ldA, const int *B, int ldB, int *C, int ldC, int n) {
+    for (int i = 0; i < n; ++i) {
+        int *crow = C + i * ldC;
+        for (int j = 0; j < n; ++j) crow[j] = 0;
+        for (int k = 0; k < n; ++k) {
+            int aik = A[i * ldA + k];
+            const int *brow = B + k * ldB;
+            for (int j = 0; j < n; ++j) {
+                crow[j] += aik * brow[j];
+            }
+        }
+    }
+}
+
+// Strassen recursion threshold — tweak for speed if you like
+#define STRASSEN_CUTOFF 64
+
+static void strassen(const int *A, int ldA, const int *B, int ldB, int *C, int ldC, int n) {
+    if (n <= STRASSEN_CUTOFF) { // base case: naive multiply
+        mul_naive(A, ldA, B, ldB, C, ldC, n);
+        return;
+    }
+
+    int k = n / 2;
+
+    // Quadrants
+    const int *A11 = A;
+    const int *A12 = A + k;
+    const int *A21 = A + k * ldA;
+    const int *A22 = A + k * ldA + k;
+
+    const int *B11 = B;
+    const int *B12 = B + k;
+    const int *B21 = B + k * ldB;
+    const int *B22 = B + k * ldB + k;
+
+    int *C11 = C;
+    int *C12 = C + k;
+    int *C21 = C + k * ldC;
+    int *C22 = C + k * ldC + k;
+
+    // Allocate temporaries (contiguous k x k blocks)
+    size_t blk = (size_t)k * (size_t)k;
+    int *M1 = (int*)malloc(sizeof(int) * blk);
+    int *M2 = (int*)malloc(sizeof(int) * blk);
+    int *M3 = (int*)malloc(sizeof(int) * blk);
+    int *M4 = (int*)malloc(sizeof(int) * blk);
+    int *M5 = (int*)malloc(sizeof(int) * blk);
+    int *M6 = (int*)malloc(sizeof(int) * blk);
+    int *M7 = (int*)malloc(sizeof(int) * blk);
+    int *T1 = (int*)malloc(sizeof(int) * blk);
+    int *T2 = (int*)malloc(sizeof(int) * blk);
+
+    if (!M1 || !M2 || !M3 || !M4 || !M5 || !M6 || !M7 || !T1 || !T2) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+
+    // M1 = (A11 + A22) * (B11 + B22)
+    add_block(A11, ldA, A22, ldA, T1, k, k);
+    add_block(B11, ldB, B22, ldB, T2, k, k);
+    strassen(T1, k, T2, k, M1, k, k);
+
+    // M2 = (A21 + A22) * B11
+    add_block(A21, ldA, A22, ldA, T1, k, k);
+    strassen(T1, k, B11, ldB, M2, k, k);
+
+    // M3 = A11 * (B12 - B22)
+    sub_block(B12, ldB, B22, ldB, T2, k, k);
+    strassen(A11, ldA, T2, k, M3, k, k);
+
+    // M4 = A22 * (B21 - B11)
+    sub_block(B21, ldB, B11, ldB, T2, k, k);
+    strassen(A22, ldA, T2, k, M4, k, k);
+
+    // M5 = (A11 + A12) * B22
+    add_block(A11, ldA, A12, ldA, T1, k, k);
+    strassen(T1, k, B22, ldB, M5, k, k);
+
+    // M6 = (A21 - A11) * (B11 + B12)
+    sub_block(A21, ldA, A11, ldA, T1, k, k);
+    add_block(B11, ldB, B12, ldB, T2, k, k);
+    strassen(T1, k, T2, k, M6, k, k);
+
+    // M7 = (A12 - A22) * (B21 + B22)
+    sub_block(A12, ldA, A22, ldA, T1, k, k);
+    add_block(B21, ldB, B22, ldB, T2, k, k);
+    strassen(T1, k, T2, k, M7, k, k);
+
+    // C11 = M1 + M4 - M5 + M7
+    for (int i = 0; i < k; ++i) {
+        int *c = C11 + i * ldC;
+        int *m1 = M1 + i * k, *m4 = M4 + i * k, *m5 = M5 + i * k, *m7 = M7 + i * k;
+        for (int j = 0; j < k; ++j) c[j] = m1[j] + m4[j] - m5[j] + m7[j];
+    }
+    // C12 = M3 + M5
+    for (int i = 0; i < k; ++i) {
+        int *c = C12 + i * ldC;
+        int *m3 = M3 + i * k, *m5 = M5 + i * k;
+        for (int j = 0; j < k; ++j) c[j] = m3[j] + m5[j];
+    }
+    // C21 = M2 + M4
+    for (int i = 0; i < k; ++i) {
+        int *c = C21 + i * ldC;
+        int *m2 = M2 + i * k, *m4 = M4 + i * k;
+        for (int j = 0; j < k; ++j) c[j] = m2[j] + m4[j];
+    }
+    // C22 = M1 - M2 + M3 + M6
+    for (int i = 0; i < k; ++i) {
+        int *c = C22 + i * ldC;
+        int *m1 = M1 + i * k, *m2 = M2 + i * k, *m3 = M3 + i * k, *m6 = M6 + i * k;
+        for (int j = 0; j < k; ++j) c[j] = m1[j] - m2[j] + m3[j] + m6[j];
+    }
+
+    free(M1); free(M2); free(M3); free(M4); free(M5); free(M6); free(M7);
+    free(T1); free(T2);
+}
+
+int main(void) {
+    int n;
+    printf("Enter n (matrix dimension n x n): ");
+    if (scanf("%d", &n) != 1 || n <= 0) {
+        fprintf(stderr, "Invalid n\n");
+        return 1;
+    }
+
+    int **A = (int**)malloc(n * sizeof(int*));
+    int **B = (int**)malloc(n * sizeof(int*));
+    int **C = (int**)malloc(n * sizeof(int*));
+    if (!A || !B || !C) { fprintf(stderr, "Alloc failed\n"); return 1; }
+
+    for (int i = 0; i < n; ++i) {
+        A[i] = (int*)malloc(n * sizeof(int));
+        B[i] = (int*)malloc(n * sizeof(int));
+        C[i] = (int*)malloc(n * sizeof(int));
+        if (!A[i] || !B[i] || !C[i]) { fprintf(stderr, "Alloc failed\n"); return 1; }
+    }
+
+    printf("Enter A (%d x %d) row-wise:\n", n, n);
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            scanf("%d", &A[i][j]);
+
+    printf("Enter B (%d x %d) row-wise:\n", n, n);
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            scanf("%d", &B[i][j]);
+
+    // Pad to next power of two
+    int s = next_pow2(n);
+    int *Ap = (int*)calloc((size_t)s * s, sizeof(int));
+    int *Bp = (int*)calloc((size_t)s * s, sizeof(int));
+    int *Cp = (int*)calloc((size_t)s * s, sizeof(int));
+    if (!Ap || !Bp || !Cp) { fprintf(stderr, "Alloc failed\n"); return 1; }
+
+    // Copy A, B into padded buffers
+    for (int i = 0; i < n; ++i) {
+        memcpy(Ap + i * s, A[i], n * sizeof(int));
+        memcpy(Bp + i * s, B[i], n * sizeof(int));
+    }
+
+    // Compute C = A * B via Strassen
+    strassen(Ap, s, Bp, s, Cp, s, s);
+
+    // Extract top-left n x n into C (2D for printing)
+    for (int i = 0; i < n; ++i) {
+        memcpy(C[i], Cp + i * s, n * sizeof(int));
+    }
+
+    // Output
+    printf("Result C = A * B:\n");
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            printf("%d ", C[i][j]);
+        }
+        printf("\n");
+    }
+
+    // Cleanup
+    free(Ap); free(Bp); free(Cp);
+    for (int i = 0; i < n; ++i) { free(A[i]); free(B[i]); free(C[i]); }
+    free(A); free(B); free(C);
+
+    return 0;
+}
