@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <math.h>
+
+#define MAX 20   // maximum matrix size
+
+// LUP decomposition
+void lupDecomposition(int n, double A[MAX][MAX], double L[MAX][MAX], double U[MAX][MAX], int P[MAX]) {
+    for (int i = 0; i < n; i++) P[i] = i;
+
+    for (int k = 0; k < n; k++) {
+        double max = 0.0;
+        int k_prime = k;
+        for (int i = k; i < n; i++)
+            if (fabs(A[i][k]) > max) { max = fabs(A[i][k]); k_prime = i; }
+
+        if (fabs(max) < 1e-12) {
+            printf("Matrix is singular!\n");
+            return;
+        }
+
+        if (k_prime != k) {
+            for (int j = 0; j < n; j++) { 
+                double tmp = A[k][j]; 
+                A[k][j] = A[k_prime][j]; 
+                A[k_prime][j] = tmp; 
+            }
+            int tmpP = P[k]; 
+            P[k] = P[k_prime]; 
+            P[k_prime] = tmpP;
+        }
+
+        for (int i = k+1; i < n; i++) {
+            A[i][k] /= A[k][k];
+            for (int j = k+1; j < n; j++)
+                A[i][j] -= A[i][k] * A[k][j];
+        }
+    }
+
+    // Extract L and U
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++) {
+            if (i > j) { L[i][j] = A[i][j]; U[i][j] = 0; }
+            else if (i == j) { L[i][j] = 1; U[i][j] = A[i][j]; }
+            else { L[i][j] = 0; U[i][j] = A[i][j]; }
+        }
+}
+
+// Forward substitution: solve Ly = Pb
+void forwardSubstitution(int n, double L[MAX][MAX], double b[MAX], double y[MAX]) {
+    for (int i = 0; i < n; i++) {
+        y[i] = b[i];
+        for (int j = 0; j < i; j++)
+            y[i] -= L[i][j] * y[j];
+    }
+}
+
+// Backward substitution: solve Ux = y
+void backwardSubstitution(int n, double U[MAX][MAX], double y[MAX], double x[MAX]) {
+    for (int i = n-1; i >= 0; i--) {
+        x[i] = y[i];
+        for (int j = i+1; j < n; j++)
+            x[i] -= U[i][j] * x[j];
+        x[i] /= U[i][i];
+    }
+}
+
+int main() {
+    int n;
+    double A[MAX][MAX], L[MAX][MAX], U[MAX][MAX];
+    double b[MAX], Pb[MAX], y[MAX], x[MAX];
+    int P[MAX];
+
+    // Input
+    printf("Enter matrix size n: ");
+    scanf("%d", &n);
+
+    printf("Enter matrix A (%d x %d):\n", n, n);
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            scanf("%lf", &A[i][j]);
+
+    printf("Enter vector b (%d elements):\n", n);
+    for (int i = 0; i < n; i++)
+        scanf("%lf", &b[i]);
+
+    // Decomposition
+    lupDecomposition(n, A, L, U, P);
+
+    // Apply permutation to b: Pb
+    for (int i = 0; i < n; i++)
+        Pb[i] = b[P[i]];
+
+    // Solve Ly = Pb, then Ux = y
+    forwardSubstitution(n, L, Pb, y);
+    backwardSubstitution(n, U, y, x);
+
+    // Output
+    printf("\nSolution x =\n");
+    for (int i = 0; i < n; i++)
+        printf("%8.3f\n", x[i]);
+
+    return 0;
+}
