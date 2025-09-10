@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <math.h>
+
+#define N 3   // size of matrix (3x3 for demo)
+
+// Function to perform LUP decomposition
+void lupDecomposition(double A[N][N], double L[N][N], double U[N][N], int P[N]) {
+    // Initialize P as identity permutation
+    for (int i = 0; i < N; i++) {
+        P[i] = i;
+    }
+
+    for (int k = 0; k < N; k++) {
+        // Pivoting: find row with max absolute value in column k
+        double max = 0.0;
+        int k_prime = k;     
+        for (int i = k; i < N; i++) {
+            if (fabs(A[i][k]) > max) {
+                max = fabs(A[i][k]);
+                k_prime = i;
+            }
+        }
+
+        // Swap rows k and k_prime in A and record in P
+        if (k_prime != k) {
+            for (int j = 0; j < N; j++) {
+                double temp = A[k][j];
+                A[k][j] = A[k_prime][j];
+                A[k_prime][j] = temp;
+            }
+            int tempP = P[k];
+            P[k] = P[k_prime];
+            P[k_prime] = tempP;
+        }
+
+        // Elimination step
+        for (int i = k+1; i < N; i++) {
+            A[i][k] /= A[k][k];
+            for (int j = k+1; j < N; j++) {
+                A[i][j] -= A[i][k] * A[k][j];
+            }
+        }
+    }
+
+    // Extract L and U from modified A
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (i > j) {
+                L[i][j] = A[i][j];
+                U[i][j] = 0;
+            } else if (i == j) {
+                L[i][j] = 1;
+                U[i][j] = A[i][j];
+            } else {
+                L[i][j] = 0;
+                U[i][j] = A[i][j];
+            }
+        }
+    }
+}
+
+int main() {
+    double A[N][N], L[N][N], U[N][N];
+    int P[N];
+
+    // Input matrix A
+    printf("Enter elements of %dx%d matrix A:\n", N, N);
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            scanf("%lf", &A[i][j]);
+        }
+    }
+
+    // Perform LUP decomposition
+    lupDecomposition(A, L, U, P);
+
+    // Print P as a permutation matrix
+    printf("\nP =\n");
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (P[i] == j) printf(" 1 ");
+            else printf(" 0 ");
+        }
+        printf("\n");
+    }
+    printf("\n");
+
+    // Print L
+    printf("L =\n");
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            printf("%6.3f ", L[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+
+    // Print U
+    printf("U =\n");
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            printf("%6.3f ", U[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
