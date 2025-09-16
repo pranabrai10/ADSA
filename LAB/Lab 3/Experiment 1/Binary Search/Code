@@ -1,0 +1,88 @@
+#include <stdio.h>
+
+// Recursive Binary Search
+int binarySearchRecursive(int arr[], int low, int high, int key) {
+    if (low <= high) {
+        int mid = (low + high) / 2;
+
+        if (arr[mid] == key)
+            return mid;  // Key found
+        else if (arr[mid] > key)
+            return binarySearchRecursive(arr, low, mid - 1, key);
+        else
+            return binarySearchRecursive(arr, mid + 1, high, key);
+    }
+    return -1; // Key not found
+}
+
+// Iterative Binary Search
+int binarySearchIterative(int arr[], int n, int key) {
+    int low = 0, high = n - 1;
+
+    while (low <= high) {
+        int mid = (low + high) / 2;
+
+        if (arr[mid] == key)
+            return mid; // Key found
+        else if (arr[mid] > key)
+            high = mid - 1;
+        else
+            low = mid + 1;
+    }
+    return -1; // Key not found
+}
+
+// Function to sort the array (Bubble Sort for simplicity)
+void sortArray(int arr[], int n) {
+    int i, j, temp;
+    for (i = 0; i < n - 1; i++) {
+        for (j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    int n, i, key;
+    
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    int arr[n];
+    printf("Enter %d integers: ", n);
+    for (i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    // Sort the array before Binary Search
+    sortArray(arr, n);
+
+    printf("Sorted Array: ");
+    for (i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    printf("Enter the key to search: ");
+    scanf("%d", &key);
+
+    // Recursive Search
+    int resultRecursive = binarySearchRecursive(arr, 0, n - 1, key);
+    if (resultRecursive != -1)
+        printf("Recursive: Key %d found at index %d\n", key, resultRecursive);
+    else
+        printf("Recursive: Key %d not found in the list\n", key);
+
+    // Iterative Search
+    int resultIterative = binarySearchIterative(arr, n, key);
+    if (resultIterative != -1)
+        printf("Iterative: Key %d found at index %d\n", key, resultIterative);
+    else
+        printf("Iterative: Key %d not found in the list\n", key);
+
+    return 0;
+}
