@@ -1,0 +1,13 @@
+Enter number of coins: 10
+Enter weights of 10 coins:
+20
+20
+20
+20
+14
+20
+20
+20
+20
+20
+Defective (lighter) coin is at position 4 (0-based index).
