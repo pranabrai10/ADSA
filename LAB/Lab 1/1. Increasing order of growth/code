@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+
+#define NUM_FUNCS 12
+#define MAX_NAME 50
+#define MAX_N 1024  // can increase for better asymptotic behavior
+
+typedef struct {
+    char name[MAX_NAME];
+    double (*func)(double);
+    double value;
+} Function;
+
+// Function definitions
+double f_inv(double n)       { return 1.0 / n; }
+double f_log2(double n)      { return log2(n); }
+double f_nlogn(double n)     { return n * log2(n); }
+double f_12sqrt(double n)    { return 12 * sqrt(n); }
+double f_50sqrt(double n)    { return 50 * sqrt(n); }
+double f_n051(double n)      { return pow(n, 0.51); }
+double f_n2minus324(double n){ return pow(n, 2) - 324; }
+double f_100n2plus6n(double n){ return 100 * pow(n, 2) + 6 * n; }
+double f_2n3(double n)       { return 2 * pow(n, 3); }
+double f_2pow32n(double n)   { return pow(2, 32) * n; }
+double f_nlog2n(double n)    { return pow(n, log2(n)); }
+double f_3n(double n)        { return pow(3, n); }
+
+int main() {
+    Function funcs[NUM_FUNCS] = {
+        {"1/n", f_inv, 0},
+        {"log2(n)", f_log2, 0},
+        {"n*log2(n)", f_nlogn, 0},
+        {"12*sqrt(n)", f_12sqrt, 0},
+        {"50*sqrt(n)", f_50sqrt, 0},
+        {"n^0.51", f_n051, 0},
+        {"n^2 - 324", f_n2minus324, 0},
+        {"100n^2 + 6n", f_100n2plus6n, 0},
+        {"2n^3", f_2n3, 0},
+        {"2^32*n", f_2pow32n, 0},
+        {"n^log2(n)", f_nlog2n, 0},
+        {"3^n", f_3n, 0}
+    };
+
+    double n = MAX_N;
+
+    // Evaluate each function at n = MAX_N
+    for (int i = 0; i < NUM_FUNCS; i++) {
+        funcs[i].value = funcs[i].func(n);
+    }
+
+    // Find Θ-equivalent pairs
+    printf("\nΘ-equivalent function groups (based on ratio at n=%g):\n", n);
+    int grouped[NUM_FUNCS] = {0};
+    for (int i = 0; i < NUM_FUNCS; i++) {
+        if (grouped[i]) continue;
+        printf("{ %s", funcs[i].name);
+        grouped[i] = 1;
+        for (int j = i + 1; j < NUM_FUNCS; j++) {
+            double ratio = funcs[i].value / funcs[j].value;
+            if (ratio > 0.5 && ratio < 2.0) { // roughly constant ratio
+                printf(", %s", funcs[j].name);
+                grouped[j] = 1;
+            }
+        }
+        printf(" }\n");
+    }
+
+    // Sort functions by growth (value at MAX_N)
+    for (int i = 0; i < NUM_FUNCS - 1; i++) {
+        for (int j = i + 1; j < NUM_FUNCS; j++) {
+            if (funcs[i].value > funcs[j].value) {
+                Function temp = funcs[i];
+                funcs[i] = funcs[j];
+                funcs[j] = temp;
+            }
+        }
+    }
+
+    // Print growth order
+    printf("\nAsymptotic growth order (approx at n=%g):\n", n);
+    for (int i = 0; i < NUM_FUNCS; i++) {
+        printf("%s", funcs[i].name);
+        if (i < NUM_FUNCS - 1) printf(" < ");
+    }
+    printf("\n");
+
+    return 0;
+}
