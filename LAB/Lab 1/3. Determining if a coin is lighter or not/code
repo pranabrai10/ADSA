@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+//-------------------------------------------------------------
+// Simulated balance scale:
+// Returns -1 if group A < group B
+//          1 if group A > group B
+//          0 if equal
+//-------------------------------------------------------------
+int weigh(int coins[], int a_start, int b_start, int len) {
+    int sumA = 0, sumB = 0, i;
+    for (i = 0; i < len; i++) {
+        sumA += coins[a_start + i];
+        sumB += coins[b_start + i];
+    }
+    if (sumA < sumB) return -1; // left lighter
+    else if (sumA > sumB) return 1; // right lighter
+    else return 0; // balanced
+}
+
+//-------------------------------------------------------------
+// Recursive divide and conquer function
+// coins[] : array of coin weights
+// start   : starting index
+// n       : number of coins
+//-------------------------------------------------------------
+int findDefective(int coins[], int start, int n) {
+    if (n == 0) return -1;       // no coins
+    if (n == 1) return start;    // single candidate coin
+
+    int half = n / 2;
+    int result = weigh(coins, start, start + half, half);
+
+    if (result == -1) {
+        // left half is lighter
+        return findDefective(coins, start, half);
+    }
+    else if (result == 1) {
+        // right half is lighter
+        return findDefective(coins, start + half, half);
+    }
+    else {
+        // balanced
+        if (n % 2 == 1) {
+            // check excluded coin
+            return start + 2 * half;
+        } else {
+            // all equal, no defective
+            return -1;
+        }
+    }
+}
+
+//-------------------------------------------------------------
+// Final verification step:
+// Compare candidate with a known good coin
+//-------------------------------------------------------------
+int verify(int coins[], int n, int candidate) {
+    if (candidate == -1) return -1; // none
+    int good = (candidate == 0) ? 1 : 0; // pick a different coin as reference
+    if (coins[candidate] < coins[good]) return candidate; // defective confirmed
+    else return -1; // not defective
+}
+
+//-------------------------------------------------------------
+// Driver program
+//-------------------------------------------------------------
+int main() {
+    int n;
+    printf("Enter number of coins: ");
+    scanf("%d", &n);
+
+    int *coins =(int*)malloc(n * sizeof(int));
+
+    printf("Enter weights of %d coins:\n", n);
+    int i;
+    for (i = 0; i < n; i++) {
+        scanf("%d", &coins[i]);
+    }
+
+    int candidate = findDefective(coins, 0, n);
+    int defective = verify(coins, n, candidate);
+
+    if (defective == -1)
+        printf("No defective coin found. All coins are perfect.\n");
+    else
+        printf("Defective (lighter) coin is at position %d (0-based index).\n", defective);
+
+    free(coins);
+    return 0;
+}
