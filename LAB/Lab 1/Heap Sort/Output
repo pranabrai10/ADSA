@@ -1,0 +1,18 @@
+Enter number of elements: 10
+Enter 10 elements:
+14
+25
+7
+32
+9
+19
+17
+21
+11
+13
+
+Original array:
+14 25 7 32 9 19 17 21 11 13
+
+Sorted array:
+7 9 11 13 14 17 19 21 25 32
