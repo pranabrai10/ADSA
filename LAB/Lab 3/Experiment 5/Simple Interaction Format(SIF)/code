@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NODES 100
+#define MAX_NAME  50
+
+// Structure for adjacency list
+typedef struct Node {
+    int vertex;
+    struct Node* next;
+} Node;
+
+typedef struct {
+    char name[MAX_NAME];
+    Node* head;
+} Vertex;
+
+Vertex graph[MAX_NODES];
+int nodeCount = 0;
+
+// Function to find index of a node (or create if not exists)
+int getIndex(char* name) {
+    for (int i = 0; i < nodeCount; i++) {
+        if (strcmp(graph[i].name, name) == 0)
+            return i;
+    }
+    // new node
+    strcpy(graph[nodeCount].name, name);
+    graph[nodeCount].head = NULL;
+    return nodeCount++;
+}
+
+// Add edge u->v
+void addEdge(int u, int v) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->vertex = v;
+    newNode->next = graph[u].head;
+    graph[u].head = newNode;
+}
+
+// Parse one SIF line
+void parseLine(char* line) {
+    char *token = strtok(line, " \t\n");
+    if (!token) return;
+
+    char source[MAX_NAME];
+    strcpy(source, token);
+    int srcIndex = getIndex(source);
+
+    char *interaction = strtok(NULL, " \t\n"); // relation (ignored in adjacency)
+    if (!interaction) return;
+
+    // Remaining tokens = targets
+    char *target;
+    while ((target = strtok(NULL, " \t\n")) != NULL) {
+        int tgtIndex = getIndex(target);
+        addEdge(srcIndex, tgtIndex);
+    }
+}
+
+void printGraph() {
+    printf("\nGraph Adjacency List (from SIF):\n");
+    for (int i = 0; i < nodeCount; i++) {
+        printf("%s -> ", graph[i].name);
+        Node* temp = graph[i].head;
+        while (temp) {
+            printf("%s ", graph[temp->vertex].name);
+            temp = temp->next;
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    FILE *fp = fopen("network.sif", "r");
+    if (!fp) {
+        printf("Error opening SIF file.\n");
+        return 1;
+    }
+
+    char line[256];
+    while (fgets(line, sizeof(line), fp)) {
+        if (line[0] == '#' || strlen(line) <= 1) continue; // skip comments
+        parseLine(line);
+    }
+    fclose(fp);
+
+    printGraph();
+    return 0;
+}
