@@ -1,0 +1,6 @@
+Minimum Spanning Tree using Prim's Algorithm:
+A - B : 4
+A - C : 2
+C - D : 3
+D - E : 7
+Total Minimum Cost = 16
