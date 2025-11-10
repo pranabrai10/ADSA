@@ -8,7 +8,7 @@ A B-Tree of degree T is defined such that:
    -The keys in each node are stored in sorted order.
 
 A. Structure of a B-Tree Node
--
+=
 struct BTreeNode {
     int keys[2*T - 1];
     struct BTreeNode *children[2*T];
