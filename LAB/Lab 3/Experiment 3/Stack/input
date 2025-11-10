@@ -1,0 +1,5 @@
+Enter an infix expression (variables allowed): (a+b)*c
+Postfix Expression: ab+c*
+Enter value for a: 2
+Enter value for b: 3
+Enter value for c: 4
