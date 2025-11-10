@@ -1,14 +1,15 @@
 Maximum Bipartite Matching in C
-
+=
 This C program implements the Maximum Bipartite Matching (MBM) algorithm using a DFS-based approach (Hungarian Method). It finds the largest set of pairings between two disjoint sets of vertices in a bipartite graph such that no two edges share a vertex.
 
 Overview
+-
 A bipartite graph is a graph whose vertices can be divided into two disjoint sets U and V, such that every edge connects a vertex from U to a vertex from V.
 The maximum matching problem seeks the largest set of edges such that no two edges share a vertex.
 This program uses a DFS-based recursive approach to find augmenting paths and efficiently compute the maximum matching.
 
 How It Works
-
+-
 Represent the bipartite graph as an adjacency matrix (graph[u][v] = 1 if an edge exists).
 Maintain an array matchV[v] to store the current matching of V vertices.
 For each vertex in U:
@@ -20,7 +21,7 @@ Continue this process for all vertices in U to achieve maximum matching.
 The DFS recursion allows the algorithm to backtrack and reassign vertices to ensure the maximum number of matches, even if initial choices block future matches.
 
 Program Structure
-
+-
 graph[MAX][MAX] — adjacency matrix of the bipartite graph
 matchV[MAX] — stores which U vertex is matched to each V vertex (-1 if unmatched)
 visited[MAX] — marks V vertices visited during DFS
@@ -30,13 +31,14 @@ main() — takes input for U and V sizes, adjacency matrix, and prints the resul
 
 
 Input Format
-
+-
 Number of vertices in sets U and V
 Adjacency matrix of size nU x nV
 Enter 1 if there is an edge between U[u] and V[v]
 Enter 0 if no edge exists
 
 Example Input:
+-
 Enter number of vertices in set U and V: 4 4
 Enter adjacency matrix (U x V):
 1 1 0 0
@@ -46,6 +48,7 @@ Enter adjacency matrix (U x V):
 
 
 Output
+-
 The program outputs:
 Maximum number of matches
 The matching pairs (U → V)
@@ -60,6 +63,6 @@ U1 -> V2
 U2 -> V3
 
 Complexity
-
+-
 Time Complexity: O(U × V) — each U vertex may traverse all V vertices in DFS
 Space Complexity: O(V + U²) — adjacency matrix + arrays for matching and visited
