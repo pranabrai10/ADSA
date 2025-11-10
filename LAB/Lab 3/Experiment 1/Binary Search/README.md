@@ -1,5 +1,5 @@
 Binary Search
-
+=
 This C program demonstrates the binary search algorithm using two different approaches:
 
 Recursive approach
@@ -8,9 +8,9 @@ Iterative approach
 It also includes a sorting function (Bubble Sort) to ensure that the input array is sorted before searching.
 
 Step-by-Step Explanation
-
+-
 (a) Sorting the Array
-
+-
 Before performing binary search, the program calls the function:
 -sortArray(arr, n);
 This function uses Bubble Sort, a simple comparison-based sorting algorithm.
@@ -24,7 +24,7 @@ How Bubble Sort works:
 -This step ensures that binary search can be applied correctly.
 
 (b) Recursive Binary Search Function
-
+-
 Function definition:
 int binarySearchRecursive(int arr[], int low, int high, int key)
 
@@ -44,7 +44,7 @@ If low becomes greater than high, the key is not present, and the function retur
 This approach uses recursion to repeatedly divide the problem into smaller subproblems.
 
 (c) Iterative Binary Search Function
-
+-
 Function definition:
 -int binarySearchIterative(int arr[], int n, int key)
 
@@ -61,7 +61,7 @@ Working principle:
 This method avoids recursion and is more memory-efficient.
 
 (d) Main Function
-
+-
 Steps performed in main():
 
 -The user enters the number of elements and the array values.
@@ -72,7 +72,7 @@ Steps performed in main():
 -The index position of the key (if found) is displayed.
 
 Example Execution
-
+-
 Input:
 
 Enter number of elements: 5
@@ -91,8 +91,8 @@ Sorted Array: 1 3 6 8 9
 Recursive: Key 6 found at index 2
 Iterative: Key 6 found at index 2
 
-4. Algorithmic Concept
-
+4.Algorithmic Concept
+-
 Binary Search Algorithm
 -Binary search works on the principle of divide and conquer.
 -The search space is divided into halves at every step.
@@ -105,14 +105,15 @@ Advantages:
 Disadvantages:
 -Works only on sorted arrays.
 
-5. Time and Space Complexity
+5.Time and Space Complexity
+-
 Operation                   	Best Case         	Worst Case        	Space Complexity
 Binary Search (Iterative)	      O(1)	             O(log n)	               O(1)
 Binary Search (Recursive)	      O(1)	             O(log n)	             O(log n)
 Bubble Sort	                    O(n)	              O(n²)	                 O(1)
 
-6. Conclusion
-
+6.Conclusion
+-
 This program demonstrates how binary search can be implemented using both recursion and iteration.
 The use of a sorting function ensures that the array is in the correct order before applying the search.
 
