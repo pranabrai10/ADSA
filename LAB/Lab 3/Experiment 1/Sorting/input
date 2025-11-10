@@ -1,0 +1,8 @@
+Enter number of elements: 6
+Enter 6 integers: 34 12 9 87 45 23
+
+Choose Sorting Method:
+1. Quick Sort
+2. Merge Sort
+3. Heap Sort
+Enter choice: 2
