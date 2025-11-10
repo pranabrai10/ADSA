@@ -1,18 +1,19 @@
 Strassen Matrix Multiplication
-
+=
 This code implements Strassen’s Algorithm for matrix multiplication in C, which reduces the time complexity of multiplying two matrices from
 the traditional O(n³) to approximately O(n^2.81).
 
 Overview
-
+-
 Matrix multiplication is a fundamental operation in computer science, used in various applications like graphics, scientific computing, and machine learning.
 The Strassen algorithm is a divide-and-conquer approach that optimizes matrix multiplication by reducing the number of recursive multiplications needed.
 
 Instead of performing 8 multiplications on submatrices like the conventional method, Strassen’s method performs only 7, reducing computational cost for large matrices.
 
 Algorithm Explanation
-1. Basic Idea
-
+-
+1.Basic Idea
+-
 Given two square matrices A and B of size n × n, Strassen’s algorithm recursively divides them into 4 submatrices each:
 
 A = | A11  A12 |
@@ -24,7 +25,8 @@ B = | B11  B12 |
 
 It then computes 7 intermediate matrices (M1 to M7) using additions and subtractions of these submatrices.
 
-2. Strassen’s Formulas
+2.Strassen’s Formulas
+-
 M1 = (A11 + A22) * (B11 + B22)
 M2 = (A21 + A22) * B11
 M3 = A11 * (B12 - B22)
@@ -52,7 +54,7 @@ strassen()	      Core recursive function implementing Strassen’s algorithm.
 main()	          Handles user input, matrix allocation, and final output.
 
 Program Flow
-
+-
 The user inputs the matrix size n.
 
 The program dynamically allocates memory for matrices A, B, and C.
@@ -66,6 +68,7 @@ The strassen() function recursively multiplies the matrices:
 The resulting matrix C = A × B is printed.
 
 Example Run
+-
 Enter n (matrix dimension n x n): 2
 Enter A (2 x 2) row-wise:
 1 2
@@ -82,7 +85,7 @@ Result C = A * B:
 Output matches the standard matrix multiplication result.
 
 Features
-
+-
 -Works for any square matrix size (n × n).
 -Automatically pads matrices to the next power of 2 for Strassen’s algorithm.
 -Recursively optimized multiplication with base case switch to naive method.
