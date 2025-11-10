@@ -1,0 +1,5 @@
+network.sif
+A pp B C
+B pp D
+C pp D
+D pp E
