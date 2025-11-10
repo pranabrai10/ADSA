@@ -1,0 +1,6 @@
+Maximum Matching possible = 3
+
+Matched pairs (U -> V):
+U1 -> V0
+U0 -> V1
+U2 -> V2
