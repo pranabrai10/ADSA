@@ -114,7 +114,6 @@ Exiting...
 J. Key Characteristics of B-Tree
 -
 Property	                                  Description
--
 Balanced Tree	            Height grows logarithmically with number of elements.
 Multiple Keys per Node	  Each node can hold several keys, reducing tree height.
 Efficient Search	                  Searching takes O(log n) time.
