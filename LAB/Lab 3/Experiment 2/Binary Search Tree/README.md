@@ -1,5 +1,5 @@
-Binary Search Tree (BST) Implementation in C
-
+Binary Search Tree (BST) Implementation
+=
 This program implements a Binary Search Tree (BST) in C language.
 
 A BST is a node-based data structure where each node contains a key, and satisfies the following properties:
@@ -13,6 +13,7 @@ The program allows the user to:
 -Display the tree using Inorder, Preorder, and Postorder traversals
 
 1️. Structure Definition
+-
 struct Node {
     int data;
     struct Node *left, *right;
@@ -24,12 +25,14 @@ Each node contains:
 -right: pointer to the right child
 
 2️. Node Creation
+-
 struct Node* createNode(int value)
 
 -Allocates memory dynamically for a new node using malloc().
 -Initializes data and sets both left and right to NULL.
 
 3️. Insertion Operation
+-
 struct Node* insert(struct Node* root, int value)
 
 -Inserts a new node into the tree following BST rules:
@@ -38,6 +41,7 @@ struct Node* insert(struct Node* root, int value)
 -Returns the root after insertion.
 
 4️. Deletion Operation
+-
 struct Node* deleteNode(struct Node* root, int value)
 
 -Deletes a node from the BST and maintains the BST property.
@@ -47,7 +51,7 @@ struct Node* deleteNode(struct Node* root, int value)
     -Node has two children → replace the node’s value with its inorder successor (smallest value in the right subtree), and delete the successor node.
 
 5️. Traversal Operations
-
+-
 There are three standard ways to traverse a BST:
 
 a) Inorder Traversal (Left, Root, Right)
@@ -66,12 +70,13 @@ void postorder(struct Node* root)
 -Useful for deleting the tree (as children are processed before the root).
 
 6️. Menu-Driven Main Function
-
+-
 The main() function repeatedly displays a menu until the user chooses Exit (6).
 It allows performing multiple insertions, deletions, and traversals dynamically.
 
 Algorithmic Complexity
 Operation	        Best Case	     Average Case    	Worst Case
+-
 Insertion	         O(log n)	       O(log n)	         O(n)
 Deletion	         O(log n)	       O(log n)	         O(n)
 Search	           O(log n)	       O(log n)	         O(n)
@@ -80,6 +85,7 @@ Traversal	           O(n)	          O(n)	           O(n)
 The worst case occurs when the tree becomes skewed, resembling a linked list (when elements are inserted in sorted order).
 
 Example Run
+-
 --- Binary Search Tree Operations ---
 1. Insert
 2. Delete
@@ -97,6 +103,7 @@ Enter your choice: 3
 Inorder Traversal: 20 40 60
 
 Key Concepts
+-
 -Binary Search Tree (BST) ensures efficient searching and sorting.
 -Recursive Functions simplify tree traversal and modification.
 -Dynamic Memory Allocation allows flexible node creation during runtime.
