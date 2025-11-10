@@ -1,20 +1,3 @@
-Enter matrix size n: 3
-Enter matrix A (3 x 3):
-5
-3
-8
-9
-3
-0
-1
-2
-6
-Enter vector b (3 elements):
-9
-4
-7
-
-Solution x =
-  -0.292
-   2.208
-   0.479
+Solution x =-0.292
+             2.208
+             0.479
