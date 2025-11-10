@@ -1,0 +1,17 @@
+B-Tree Operations:
+1. Insert
+2. Delete (only leaf keys)
+3. Print B-Tree
+4. Exit
+Enter your choice: 1
+Enter key to insert: 10
+Enter your choice: 1
+Enter key to insert: 20
+Enter your choice: 1
+Enter key to insert: 5
+Enter your choice: 3
+B-Tree structure:
+Level 0: 10 
+Level 1: 5 20 
+Enter your choice: 4
+Exiting...
