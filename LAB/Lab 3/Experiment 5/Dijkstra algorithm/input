@@ -1,0 +1,8 @@
+Enter number of vertices (<= 10): 5
+Enter adjacency matrix (0 if no edge):
+0 10 0 30 100
+10 0 50 0 0
+0 50 0 20 10
+30 0 20 0 60
+100 0 10 60 0
+Enter source vertex (0 to 4): 0
