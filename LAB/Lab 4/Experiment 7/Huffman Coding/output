@@ -1,0 +1,13 @@
+: 1110
+ : 0111
+D: 010
+E: 000
+H: 001
+L: 10
+O: 110
+R: 0110
+W: 1111
+Encoded data written to 'encoded.txt'
+
+Encoded file (encoded.txt):
+110101000011100010111010
