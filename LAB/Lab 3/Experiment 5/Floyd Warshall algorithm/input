@@ -1,0 +1,6 @@
+Enter number of vertices (<= 10): 4
+Enter adjacency matrix (use 99999 for no edge):
+0 3 99999 7
+8 0 2 99999
+5 99999 0 1
+2 99999 99999 0
