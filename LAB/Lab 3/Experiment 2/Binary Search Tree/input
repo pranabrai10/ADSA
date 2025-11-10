@@ -1,0 +1,14 @@
+--- Binary Search Tree Operations ---
+1. Insert
+2. Delete
+3. Inorder Traversal
+4. Preorder Traversal
+5. Postorder Traversal
+6. Exit
+Enter your choice: 1
+Enter value to insert: 50
+Enter your choice: 1
+Enter value to insert: 30
+Enter your choice: 1
+Enter value to insert: 70
+Enter your choice: 3
