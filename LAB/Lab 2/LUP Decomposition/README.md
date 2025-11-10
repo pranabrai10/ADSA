@@ -1,5 +1,5 @@
  LUP Decomposition
-
+=
 This program performs **LUP decomposition** (LU decomposition with partial pivoting) on a square matrix.  
 It decomposes a given matrix `A` into three matrices:
 
@@ -13,7 +13,7 @@ P * A = L * U
 
 
 Objective
-
+-
 The program is designed to:
 
 - Decompose a 3x3 matrix using **partial pivoting** for numerical stability.  
@@ -25,7 +25,7 @@ This is useful for solving systems of linear equations and understanding matrix 
 
 
 Included Libraries
-
+-
 #include <stdio.h>  // Input/output functions
 #include <math.h>   // Mathematical functions (fabs)
 <stdio.h> → For printf and scanf
@@ -33,13 +33,14 @@ Included Libraries
 <math.h> → For fabs() (absolute value of floating point numbers)
 
 Constants and Macros
-
+-
 #define N 3   // Size of the matrix (3x3)
 N defines the size of the square matrix.
 
 The program can be extended for larger matrices by increasing N.
 
 Data Structures
+-
 Matrix Arrays:
 
 double A[N][N];  // Original input matrix
@@ -49,6 +50,7 @@ int P[N];        // Permutation array (records row swaps)
 P[i] = j means row i in the final matrix corresponds to row j in the original matrix after pivoting.
 
 Function: lupDecomposition
+-
 This function performs the LUP decomposition.
 
 Step 1: Initialize Permutation Array
