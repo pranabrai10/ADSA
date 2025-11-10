@@ -1,5 +1,5 @@
 LUP decomposition
-
+=
 This program is designed to:
 
 Take a square matrix A and a vector b as input.
@@ -20,8 +20,9 @@ Output the solution vector x.
 Essentially, it allows you to solve any system of linear equations efficiently and safely, avoiding numerical issues by pivoting.
 
 Key Concepts
+-
 LUP Decomposition
-
+-
 LUP decomposition is a way to factor a matrix A into:
 
 P⋅A=L⋅U
@@ -35,13 +36,13 @@ U → Upper triangular matrix (all zeros below the diagonal)
 P → Permutation matrix representing row swaps
 
 Why use P?
-
+-
 Partial pivoting swaps rows so the largest element in a column is on the diagonal.
 
 This prevents division by zero or very small numbers and improves numerical stability.
 
 Forward Substitution
-
+-
 After decomposition, we first solve:
 
 L⋅y=P⋅b
@@ -56,7 +57,7 @@ y[2] = Pb[2] - L[2][0]*y[0] - L[2][1]*y[1]
 ...
 
 Backward Substitution
-
+-
 Next, we solve:
 
 U⋅x=y
@@ -81,7 +82,7 @@ Read the n x n matrix A.
 Read the vector b of length n.
 
 LUP Decomposition
-
+-
 Initialize P to the identity permutation.
 
 For each column k:
@@ -107,7 +108,7 @@ Forward substitution: Solve L * y = Pb.
 Backward substitution: Solve U * x = y.
 
 Output
-
+-
 Print the solution vector x.
 
 Important Features
