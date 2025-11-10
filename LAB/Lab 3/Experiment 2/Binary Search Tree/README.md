@@ -76,7 +76,6 @@ It allows performing multiple insertions, deletions, and traversals dynamically.
 
 Algorithmic Complexity
 Operation	        Best Case	     Average Case    	Worst Case
--
 Insertion	         O(log n)	       O(log n)	         O(n)
 Deletion	         O(log n)	       O(log n)	         O(n)
 Search	           O(log n)	       O(log n)	         O(n)
