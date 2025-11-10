@@ -72,8 +72,7 @@ The insert() function:
 
 Balance Cases in Insertion:
 
-Case	 v                    Condition	                                           Rotation
--
+Case	         v             Condition	                                           Rotation
 Left-Left (LL)	      balance > 1 && key < node->left->key	                    Right Rotate
 Right-Right (RR)	    balance < -1 && key > node->right->key	                  Left Rotate
 Left-Right (LR)	      balance > 1 && key > node->left->key	     Left Rotate (left child) → Right Rotate
@@ -92,7 +91,6 @@ The deleteNode() function:
 Balance Cases in Deletion:
 
 Case	                 Condition	                                              Rotation
--
 Left-Left	           balance > 1 && getBalance(left) >= 0	                    Right Rotate
 Left-Right	         balance > 1 && getBalance(left) < 0	     Left Rotate (left child) → Right Rotate
 Right-Right	         balance < -1 && getBalance(right) <= 0	                  Left Rotate
