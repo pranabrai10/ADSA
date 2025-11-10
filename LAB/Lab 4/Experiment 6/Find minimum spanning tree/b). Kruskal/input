@@ -1,0 +1,10 @@
+File: graph.sif
+A B 4
+A C 3
+B C 1
+B D 2
+C D 4
+D E 2
+E F 6
+
+Enter SIF file name: graph.sif
