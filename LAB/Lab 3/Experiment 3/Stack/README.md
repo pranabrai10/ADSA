@@ -1,5 +1,5 @@
 Infix to Postfix Conversion and Evaluation Program
-
+=
 This program performs two main tasks:
  1. Convert an infix expression to a postfix expression
  2. Evaluate the postfix expression
@@ -8,7 +8,7 @@ It uses two types of stacks — one for characters (operators) and one for integ
 
 
 A. Char Stack (for Infix to Postfix Conversion)
-
+-
 Purpose:
 Used to temporarily hold operators and parentheses during the conversion.
 
@@ -19,8 +19,6 @@ struct CharStack {
     char arr[MAX];
 };
 
-
-
 Key Operations:
 -pushChar() → pushes an operator or parenthesis onto the stack.
 -popChar() → pops the top operator from the stack.
@@ -29,7 +27,7 @@ Key Operations:
 
 
 B. Int Stack (for Postfix Evaluation)
-
+-
 Purpose:
 Used to store integer operands and intermediate results during evaluation.
 
@@ -45,7 +43,7 @@ Key Operations:
 
 
 C. Helper Functions
-
+-
 1.precedence(char op)
 Determines the order of precedence for operators:
 -^ → highest precedence
@@ -57,7 +55,7 @@ Checks whether a character is an operator.
 
 
 D. Infix to Postfix Conversion
-
+-
 -The Shunting Yard Algorithm (by Edsger Dijkstra) is used.
 -Steps:
     -Read each character from the infix expression.
@@ -78,6 +76,7 @@ Conversion steps:
 Postfix → ab+c*
 
 E. Postfix Evaluation
+-
 Once the postfix expression is generated:
 
 1.Traverse each symbol in the postfix expression:
@@ -97,6 +96,7 @@ Values: a=2, b=3, c=4
 Result → 20
 
 F. Key Features
+-
    -Uses two stacks (one for characters, one for integers)
    -Handles variables and digits
    -Supports parentheses
@@ -104,6 +104,7 @@ F. Key Features
    -Handles exponentiation (^)
 
 G. Sample Run
+-
 Enter an infix expression (variables allowed): (a+b)*c
 Postfix Expression: ab+c*
 Enter value for a: 2
@@ -113,7 +114,7 @@ Evaluation Result: 20
 
 
 H. Conclusion
-
+-
 This program demonstrates the use of stack data structure in:
     -Converting infix expressions to postfix (Reverse Polish Notation),
     -Evaluating arithmetic expressions efficiently using stacks.
