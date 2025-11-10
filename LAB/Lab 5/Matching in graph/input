@@ -1,0 +1,6 @@
+Enter number of vertices in set U and V: 4 4
+Enter adjacency matrix (U x V):
+0 1 1 0
+1 0 0 1
+0 0 1 0
+0 1 0 0
