@@ -1,0 +1,6 @@
+Graph Adjacency List (from SIF):
+A -> C B 
+B -> D 
+C -> D 
+D -> E 
+E -> 
