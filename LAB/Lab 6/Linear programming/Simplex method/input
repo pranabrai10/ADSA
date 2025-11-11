@@ -1,0 +1,16 @@
+Enter the number of constraints: 2
+Enter the number of variables: 2
+
+Enter coefficients of constraints (including RHS):
+Constraint 1:
+Coefficient of x1: 2
+Coefficient of x2: 1
+Right-hand side: 100
+Constraint 2:
+Coefficient of x1: 1
+Coefficient of x2: 1
+Right-hand side: 80
+
+Enter coefficients of objective function (Z = c1*x1 + c2*x2 + ...):
+Coefficient of x1: -3
+Coefficient of x2: -2
