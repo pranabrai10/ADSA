@@ -1,0 +1,10 @@
+Enter number of variables (n <= 10): 2
+Enter number of equality constraints (m = 1 for this version): 1
+Enter coefficients of objective function (c1 c2 ... cn):
+1 1
+Enter constraint coefficients A (1 row: a11 a12 ... an):
+1 1
+Enter constraint RHS value b:
+1
+Enter initial positive starting point x0 (must satisfy Ax=b):
+0.5 0.5
