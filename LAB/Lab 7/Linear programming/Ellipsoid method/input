@@ -1,0 +1,14 @@
+Ellipsoid Algorithm for LP Feasibility: A x <= b
+Enter number of variables n (<= 20): 2
+Enter number of constraints m (<= 200): 4
+Enter matrix A (m rows, each with n entries):
+-1 -1
+-1 1
+-1 0
+0 -1
+Enter vector b (m entries):
+-1
+0
+0
+0
+Enter initial radius R for bounding ball (e.g., 10): 1
