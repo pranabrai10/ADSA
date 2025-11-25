@@ -1,90 +1,126 @@
-Binary Search Tree (BST) Implementation
-=
-This program implements a Binary Search Tree (BST) in C language.
+# Binary Search Tree (BST) – C Implementation
 
-A BST is a node-based data structure where each node contains a key, and satisfies the following properties:
--The left subtree of a node contains only nodes with keys less than the node’s key.
--The right subtree of a node contains only nodes with keys greater than the node’s key.
--Both left and right subtrees are also binary search trees.
+This code implements a **Binary Search Tree (BST)** in C.  
+A BST is a node-based data structure where each node stores a key and satisfies:
 
-The program allows the user to:
--Insert a new node
--Delete an existing node
--Display the tree using Inorder, Preorder, and Postorder traversals
+- Left subtree nodes contain keys **less than** the root  
+- Right subtree nodes contain keys **greater than** the root  
+- Both subtrees must also be valid BSTs  
 
-1️. Structure Definition
--
+The program is fully **menu-driven**, allowing the user to:
+
+- Insert nodes  
+- Delete nodes  
+- Perform Inorder, Preorder, and Postorder traversals  
+
+---
+
+## 📌 1. Structure Definition
+
+```c
 struct Node {
     int data;
     struct Node *left, *right;
 };
+```
 
 Each node contains:
--data: the value stored in the node
--left: pointer to the left child
--right: pointer to the right child
 
-2️. Node Creation
--
-struct Node* createNode(int value)
+- `data` → value stored  
+- `left` → pointer to left child  
+- `right` → pointer to right child  
 
--Allocates memory dynamically for a new node using malloc().
--Initializes data and sets both left and right to NULL.
+---
 
-3️. Insertion Operation
--
-struct Node* insert(struct Node* root, int value)
+## 📌 2. Node Creation
 
--Inserts a new node into the tree following BST rules:
-    -If value < root->data, insert in the left subtree.
-    -If value > root->data, insert in the right subtree.
--Returns the root after insertion.
+```c
+struct Node* createNode(int value);
+```
 
-4️. Deletion Operation
--
-struct Node* deleteNode(struct Node* root, int value)
+This function:
 
--Deletes a node from the BST and maintains the BST property.
--There are three cases:
-    -Node has no child (leaf node) → delete directly.
-    -Node has one child → replace the node with its child.
-    -Node has two children → replace the node’s value with its inorder successor (smallest value in the right subtree), and delete the successor node.
+- Allocates memory dynamically  
+- Sets the node’s data  
+- Initializes left and right child pointers to `NULL`  
 
-5️. Traversal Operations
--
-There are three standard ways to traverse a BST:
+---
 
-a) Inorder Traversal (Left, Root, Right)
-void inorder(struct Node* root)
+## 📌 3. Insertion Operation
 
--Displays elements in ascending order.
+```c
+struct Node* insert(struct Node* root, int value);
+```
 
-b) Preorder Traversal (Root, Left, Right)
-void preorder(struct Node* root)
+Insertion follows BST rules:
 
--Useful for creating a copy of the tree.
+- If `value < root->data` → insert into left subtree  
+- If `value > root->data` → insert into right subtree  
+- Returns the updated root  
 
-c) Postorder Traversal (Left, Right, Root)
-void postorder(struct Node* root)
+Duplicate values are typically ignored in standard BSTs.
 
--Useful for deleting the tree (as children are processed before the root).
+---
 
-6️. Menu-Driven Main Function
--
-The main() function repeatedly displays a menu until the user chooses Exit (6).
-It allows performing multiple insertions, deletions, and traversals dynamically.
+## 📌 4. Deletion Operation
 
-Algorithmic Complexity
-Operation	        Best Case	     Average Case    	Worst Case
-Insertion	         O(log n)	       O(log n)	         O(n)
-Deletion	         O(log n)	       O(log n)	         O(n)
-Search	           O(log n)	       O(log n)	         O(n)
-Traversal	           O(n)	          O(n)	           O(n)
+```c
+struct Node* deleteNode(struct Node* root, int value);
+```
 
-The worst case occurs when the tree becomes skewed, resembling a linked list (when elements are inserted in sorted order).
+Three deletion cases:
 
-Example Run
--
+### **1. Node with no children (Leaf Node)**
+- Delete directly
+
+### **2. Node with one child**
+- Replace node with its single child
+
+### **3. Node with two children**
+- Replace node with its **inorder successor**  
+  (smallest value in right subtree)  
+- Delete successor node recursively
+
+BST property is preserved in all cases.
+
+---
+
+## 📌 5. Traversal Operations
+
+### 🔹 **Inorder Traversal (Left → Root → Right)**  
+```c
+void inorder(struct Node* root);
+```
+Prints elements in **ascending order**.
+
+---
+
+### 🔹 **Preorder Traversal (Root → Left → Right)**  
+```c
+void preorder(struct Node* root);
+```
+Useful for:
+
+- Copying the tree  
+- Storing tree structure  
+
+---
+
+### 🔹 **Postorder Traversal (Left → Right → Root)**  
+```c
+void postorder(struct Node* root);
+```
+Useful for:
+
+- Deleting/freeing the entire tree safely  
+
+---
+
+## 📌 6. Menu-Driven Main Function
+
+The program repeatedly displays a menu:
+
+```
 --- Binary Search Tree Operations ---
 1. Insert
 2. Delete
@@ -92,17 +128,47 @@ Example Run
 4. Preorder Traversal
 5. Postorder Traversal
 6. Exit
+```
+
+Users can dynamically insert, delete, and traverse the BST.
+
+---
+
+## 📌 Algorithmic Complexity
+
+| Operation | Best Case | Average Case | Worst Case |
+|----------|-----------|--------------|------------|
+| **Insertion** | O(log n) | O(log n) | O(n) |
+| **Deletion** | O(log n) | O(log n) | O(n) |
+| **Search** | O(log n) | O(log n) | O(n) |
+| **Traversal** | O(n) | O(n) | O(n) |
+
+Worst-case happens when the BST becomes **skewed**, e.g., inserting sorted elements (like a linked list).
+
+---
+
+## 📌 Example Run
+
+```
 Enter your choice: 1
 Enter value to insert: 40
+
 Enter your choice: 1
 Enter value to insert: 20
+
 Enter your choice: 1
 Enter value to insert: 60
+
 Enter your choice: 3
 Inorder Traversal: 20 40 60
+```
 
-Key Concepts
--
--Binary Search Tree (BST) ensures efficient searching and sorting.
--Recursive Functions simplify tree traversal and modification.
--Dynamic Memory Allocation allows flexible node creation during runtime.
+---
+
+## 📌 Key Concepts
+
+- Binary Search Tree provides efficient search, insert, and delete operations  
+- Recursion simplifies traversal and structural modifications  
+- Dynamic allocation allows flexible tree creation during runtime  
+
+
