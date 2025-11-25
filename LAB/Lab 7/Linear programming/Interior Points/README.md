@@ -1,127 +1,180 @@
-Interior Point Method for Linear Optimization
-=
-Overview
--
-This program implements a very simple version of the Interior Point Method (IPM), specifically the Barrier Method, to solve linear optimization problems.
-Interior Point Methods approach the optimal solution from the inside of the feasible region, unlike the Simplex Method which moves along the boundary.
+# Interior Point Method – C Implementation (Barrier Method)
 
-This version supports one equality constraint and ensures all variables remain strictly positive during the optimization process.
+This code implements a **minimal educational version** of the **Interior Point Method (IPM)** for solving simple linear optimization problems.  
+Specifically, it uses the **Logarithmic Barrier Method**, which approaches the optimal solution from **inside** the feasible region.
 
-Objective
--
-To demonstrate a minimal, easy-to-understand implementation of the Interior Point Method that:
+Unlike the Simplex Method (which walks along the edges), Interior Point Methods follow a smooth trajectory called the **central path**.
 
--Maximizes or minimizes a linear objective function
--Maintains strictly positive variables
--Uses Newton steps to follow the central path
--Updates the barrier parameter to move toward optimality
+This implementation supports:
+- A **single equality constraint**
+- A strictly positive feasible starting point
+- Newton-based updates for following the barrier path
 
-Concept
--
-Interior Point Methods reformulate a constrained optimization problem using a logarithmic barrier:
+Designed for **learning**, not industrial-scale optimization.
 
-Minimize: ϕ(x) = cTx −t∑ln(xi)
-                       i
-Here:
+---
 
--c^Tx → original objective
--−tln(xi) → barrier term that prevents entering negative region
--t increases to gradually reduce the effect of the barrier
+## 📌 Features
 
-The algorithm uses Newton's Method to iteratively move closer to the optimal solution while staying inside the feasible region.
+### ✔ Core Capabilities
+| Feature | Description |
+|---------|-------------|
+| **Linear Objective Optimization** | Minimizes or maximizes \( c^T x \) |
+| **Log-Barrier Function** | Ensures all \( x_i > 0 \) |
+| **Newton Direction Computation** | Solves for step direction |
+| **Adaptive Step Size** | Maintains strict positivity |
+| **Equality Constraint Projection** | Preserves feasibility |
+| **Barrier Parameter Update** | Drives the solution toward optimality |
 
-Key ideas:
--
--Start with a strictly positive point that satisfies the equality constraint
--Compute gradient and Hessian of the barrier function
--Solve the Newton system
--Take a step that keeps all variables positive
--Project back to satisfy the equality constraint
--Increase the barrier parameter
--Repeat until convergence
+---
 
-Major Components
--
-1. Gradient Calculation
+## 📌 Concept Overview
 
-Computes:
+Interior Point Methods approximate the original objective using a **barrier-augmented function**:
 
-gi=ci−t/xi​
+\[
+\phi(x) = c^T x - t \sum_i \ln(x_i)
+\]
 
-This is the gradient of the barrier-augmented objective.
+Where:
 
-2. Hessian Matrix
+- \( c^T x \) → original objective  
+- \( -t \ln(x_i) \) → barrier preventing \( x_i \le 0 \)  
+- \( t \) → barrier parameter, increased over time  
 
-A diagonal matrix:
+As \( t \rightarrow \infty \), \( \phi(x) \) approaches the true objective while keeping iterates strictly inside the positive orthant.
 
-Hii=t/(xi)^2
+---
 
-Used in Newton’s method to compute the search direction.
+## 📌 Key Ideas
 
-3. Newton Direction
+- Start with a **strictly positive** feasible point  
+- Compute gradient + Hessian of the barrier function  
+- Solve the Newton system to obtain a search direction  
+- Choose a step size that keeps **all variables positive**  
+- Apply a correction to satisfy the equality constraint  
+- Increase the barrier parameter  
+- Repeat until convergence  
 
-Solves:
+This simple variant demonstrates the essential mechanics of IPMs.
 
-Hdx=−g
+---
 
-(using Gaussian elimination in the code)
+## 📌 Major Components
 
-Produces the direction that improves the current point.
+### 🔹 1. Gradient Calculation
+For each variable:
 
-4. Step Size Rule
+\[
+g_i = c_i - \frac{t}{x_i}
+\]
 
-Ensures:
+Used in Newton’s method.
 
-xi+αdxi>0
+---
 
-A conservative 0.9 safety margin is used to keep the iterate strictly inside the feasible region.
+### 🔹 2. Hessian Matrix
+Diagonal matrix:
 
-5. Equality Constraint Correction
+\[
+H_{ii} = \frac{t}{x_i^2}
+\]
 
-Since this version supports one equality constraint, the correction is applied as:
+Represents curvature of the barrier term.
 
--Compute the constraint residual
--Distribute the adjustment equally among all variables
+---
+
+### 🔹 3. Newton Direction
+Solve the system:
+
+\[
+H \, \Delta x = -g
+\]
+
+The implementation uses **Gaussian elimination** for simplicity.
+
+---
+
+### 🔹 4. Step Size Rule
+Ensure the step keeps all variables strictly positive:
+
+\[
+x_i + \alpha \Delta x_i > 0
+\]
+
+The program uses a safety factor **0.9** to prevent boundary violations.
+
+---
+
+### 🔹 5. Equality Constraint Correction
+For the single equality constraint:
+
+\[
+A x = b
+\]
+
+The correction step:
+
+- Computes constraint residual  
+- Distributes adjustment evenly across all variables  
+- Ensures next iterate satisfies the equality  
 
 Simple and effective for demonstration.
 
-Algorithm Steps
--
-1.Read number of variables and constraint.
-2.Input objective vector c, constraint vector A, and RHS b.
-3.Start from a positive feasible point x0
-4.Compute gradient and Hessian.
-5.Solve Newton system for direction dx.
-6.Choose step size to keep variables positive.
-7.Update x←x+αdx.
-8.Project to satisfy equality constraint.
-9.Increase barrier parameter t.
+---
 
-10.Repeat until gradient norm < tolerance.
+## 📌 Algorithm Steps
 
-Data Structures Used
--
--Arrays for:
-  Objective vector
-  Constraint row
-  Gradient
-  Newton direction
--2D array for Hessian matrix
--Gaussian elimination for solving linear systems
+1. Read number of variables and the single equality constraint  
+2. Input:
+   - Objective vector \( c \)  
+   - Constraint row \( A \)  
+   - RHS \( b \)  
+3. Choose a **strictly positive feasible** starting point \( x_0 \)  
+4. Compute:
+   - Gradient  
+   - Hessian  
+5. Solve Newton system for search direction \( \Delta x \)  
+6. Compute safe step size \( \alpha \)  
+7. Update:
+   \[
+   x \leftarrow x + \alpha \Delta x
+   \]
+8. Project to satisfy equality constraint  
+9. Increase barrier parameter \( t \)  
+10. Repeat until gradient norm < tolerance  
 
-Advantages
--
--Simple and easy to understand
--Illustrates core ideas of Interior Point Methods
--Ensures all variables stay positive
--No external libraries required
--Useful for small educational examples
+---
 
-Limitations
--
--Supports only one equality constraint
--No inequality constraints
--Not a full IPM / no KKT system
--Not suitable for real optimization problems
--Uses basic Gaussian elimination (not numerically robust)
--Must provide a positive feasible starting point
+## 📌 Data Structures Used
+
+- Arrays for:
+  - Objective vector  
+  - Constraint vector  
+  - Current point  
+  - Gradient  
+  - Newton direction  
+- 2D array for Hessian  
+- Gaussian elimination routine for solving linear systems  
+
+---
+
+## 📌 Advantages
+
+- Simple and easy to understand  
+- Demonstrates the core principles of Interior Point Methods  
+- Ensures variables remain strictly positive  
+- No external math libraries needed  
+- Great for small, educational demonstrations  
+
+---
+
+## 📌 Limitations
+
+- Supports **only one equality constraint**  
+- No inequality constraints  
+- Not a full IPM (no KKT matrix or full Newton system)  
+- Not suitable for real-world optimization problems  
+- Basic Gaussian elimination may suffer from numerical issues  
+- Requires a feasible positive starting point  
+
