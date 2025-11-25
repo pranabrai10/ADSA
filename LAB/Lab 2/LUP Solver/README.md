@@ -1,126 +1,202 @@
-LUP decomposition
-=
-This program is designed to:
+# LUP Decomposition and Linear System Solver (C Implementation)
 
-Take a square matrix A and a vector b as input.
+This program performs **LUP decomposition** on a square matrix **A** and uses it to solve the linear system:
 
-Perform LUP decomposition on A, breaking it into:
+\[
+A \cdot x = b
+\]
 
-L → Lower triangular matrix with 1s on the diagonal
+It decomposes the matrix into:
 
-U → Upper triangular matrix
+- **L** → Lower triangular matrix (1s on diagonal)  
+- **U** → Upper triangular matrix  
+- **P** → Permutation matrix (handles row swaps for stability)
 
-P → Permutation matrix (records row swaps for pivoting)
+Then it solves the system in two phases:
 
-Solve the system of linear equations 
-A⋅x=b using the decomposition.
+1. **Forward substitution:** solve \(L \cdot y = P \cdot b\)  
+2. **Backward substitution:** solve \(U \cdot x = y\)
 
-Output the solution vector x.
+The final output is the solution vector **x**.
 
-Essentially, it allows you to solve any system of linear equations efficiently and safely, avoiding numerical issues by pivoting.
+---
 
-Key Concepts
--
-LUP Decomposition
--
-LUP decomposition is a way to factor a matrix A into:
+## 📌 Overview
 
-P⋅A=L⋅U
+This program:
+
+- Accepts matrix **A** and vector **b** as input  
+- Computes LUP decomposition using **partial pivoting**  
+- Detects singular or nearly-singular matrices  
+- Solves the system efficiently using triangular systems  
+- Outputs the final solution vector  
+
+LUP decomposition is one of the most stable and widely used numerical methods for solving linear equations.
+
+---
+
+## 📌 Key Concepts
+
+### 🔹 LUP Decomposition
+
+Factor a matrix:
+
+\[
+P \cdot A = L \cdot U
+\]
 
 Where:
 
-L → Lower triangular matrix (all zeros above the diagonal, ones on the diagonal)
+- **L** → Lower triangular matrix (1s on diagonal)  
+- **U** → Upper triangular matrix  
+- **P** → Permutation matrix for row pivoting  
 
-U → Upper triangular matrix (all zeros below the diagonal)
+### 🔹 Why Pivoting? (Permutation Matrix P)
 
-P → Permutation matrix representing row swaps
+Partial pivoting swaps rows so that the largest available pivot appears on the diagonal.
 
-Why use P?
--
-Partial pivoting swaps rows so the largest element in a column is on the diagonal.
+This prevents:
 
-This prevents division by zero or very small numbers and improves numerical stability.
+- Division by extremely small numbers  
+- Numerical instability  
+- Failure when matrix elements are zero  
 
-Forward Substitution
--
-After decomposition, we first solve:
+`P` ensures that the correct rows are tracked throughout decomposition.
 
-L⋅y=P⋅b
+---
 
-y is an intermediate vector.
+## 📌 Forward Substitution
 
-Since L is lower triangular with 1s on the diagonal, you can compute y row by row:
+Solves the system:
 
+\[
+L \cdot y = P \cdot b
+\]
+
+Since **L is lower triangular**, compute:
+
+```
 y[0] = Pb[0]
-y[1] = Pb[1] - L[1][0]*y[0]
-y[2] = Pb[2] - L[2][0]*y[0] - L[2][1]*y[1]
+y[1] = Pb[1] - L[1][0] * y[0]
+y[2] = Pb[2] - L[2][0] * y[0] - L[2][1] * y[1]
 ...
+```
 
-Backward Substitution
--
-Next, we solve:
+This produces an intermediate vector **y**.
 
-U⋅x=y
+---
 
-U is upper triangular, so we solve from the last row upwards:
+## 📌 Backward Substitution
 
+Solve:
+
+\[
+U \cdot x = y
+\]
+
+Since **U is upper triangular**, solve from bottom to top:
+
+```
 x[n-1] = y[n-1] / U[n-1][n-1]
 x[n-2] = (y[n-2] - U[n-2][n-1]*x[n-1]) / U[n-2][n-2]
 ...
+```
 
+This produces the final **solution vector x**.
 
-This gives the final solution vector x.
+---
 
-Step-by-Step Program Flow
+## 📌 Step-by-Step Program Flow
 
-Input
+### 1️⃣ Input
+- Read integer **n** (matrix size)
+- Read **A[n][n]**
+- Read vector **b[n]**
 
-Ask the user for the size of the matrix n.
+---
 
-Read the n x n matrix A.
+### 2️⃣ LUP Decomposition
 
-Read the vector b of length n.
+Performed column by column:
 
-LUP Decomposition
--
-Initialize P to the identity permutation.
+#### ✔ Initialize permutation
+`P[i] = i` (identity permutation)
 
-For each column k:
+#### ✔ Pivot selection
+Find row with max absolute value in column `k`  
+→ swap rows if necessary
 
-Find the row with the largest absolute value in that column (pivot).
+#### ✔ Elimination  
+Eliminate elements below pivot to form **U**  
+Store multipliers in **L**
 
-Swap rows if necessary and update P.
+#### ✔ Singular matrix check  
+If pivot ≈ 0 → matrix is singular
 
-Eliminate elements below the pivot to make U upper triangular.
+---
 
-Store multipliers in L.
+### 3️⃣ Apply Permutation to b
 
-Detect singular matrices if a pivot is very small (≈ 0).
+Compute vector:
 
-Apply Permutation to b
+\[
+Pb = b\ \text{reordered according to } P
+\]
 
-Compute Pb, the permuted vector, according to P.
+Used during forward substitution.
 
-Solve the System
+---
 
-Forward substitution: Solve L * y = Pb.
+### 4️⃣ Solve the system
 
-Backward substitution: Solve U * x = y.
+✔ **Forward substitution:**  
+Solve \(L y = P b\)
 
-Output
--
-Print the solution vector x.
+✔ **Backward substitution:**  
+Solve \(U x = y\)
 
-Important Features
+---
 
-Works for any square matrix of size n ≤ MAX.
+### 5️⃣ Output
 
-Automatically handles row swaps via partial pivoting.
+Print the final solution vector:
 
-Checks for singular matrices.
+```
+Solution x:
+x[0] = ...
+x[1] = ...
+x[2] = ...
+```
 
-Efficiently solves Ax = b using decomposition instead of direct elimination.
+---
 
-Uses standard numerical linear algebra techniques suitable for numerical computing.
+## 📌 Important Features
 
-Do you want me to make that diagram?
+✔ Works for any square matrix up to size `MAX`  
+✔ Fully handles partial pivoting  
+✔ Detects singular/unstable matrices  
+✔ Uses stable numerical linear algebra methods  
+✔ Efficient: decomposition is reused to solve the system  
+
+---
+
+## 📌 Applications
+
+- Engineering simulations  
+- Solving linear equations repeatedly  
+- Numerical analysis  
+- Computer graphics transformations  
+- Matrix inversion and determinants  
+
+---
+
+## 📌 Conclusion
+
+This program demonstrates:
+
+- Stable LUP matrix decomposition  
+- Forward and backward substitution  
+- Solving \(A x = b\) efficiently and accurately  
+
+It is a core technique used throughout scientific computing, data science, and numerical methods.
+
