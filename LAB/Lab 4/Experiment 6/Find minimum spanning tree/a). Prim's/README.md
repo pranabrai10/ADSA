@@ -1,104 +1,183 @@
-Prim’s Minimum Spanning Tree (MST) from SIF File
-=
-This program reads a network graph from a SIF (Simple Interaction Format) file and constructs a Minimum Spanning Tree (MST) using Prim’s Algorithm.
-It efficiently finds the subset of edges that connects all vertices in the graph with the minimum possible total weight.
+# Prim’s Minimum Spanning Tree (MST) – C Implementation (SIF File Input)
 
-A. Overview
--
-Prim’s Algorithm is a greedy algorithm that finds the Minimum Spanning Tree (MST) for a weighted, undirected graph.
-It starts from a source vertex and repeatedly adds the smallest edge that connects a vertex in the MST to a vertex outside the MST.
+This code implements **Prim’s Algorithm** to compute the **Minimum Spanning Tree (MST)** of a graph provided in a **SIF (Simple Interaction Format)** file.  
+The program reads vertex names and weighted edges directly from the file, maps them internally, builds an adjacency matrix, and constructs the MST.
 
-B. Key Concepts
--
-Term	Description
-MST (Minimum Spanning Tree)	A tree connecting all vertices with the smallest total edge weight and no cycles.
-Greedy Choice	At each step, the smallest available edge connecting to an unvisited vertex is chosen.
-Adjacency Matrix	The program stores the graph using a 2D matrix representation.
+Prim’s algorithm finds a subset of edges that connects all vertices with **minimum total cost**, without forming cycles.
 
-C. Program Structure
--
-1.Vertex Mapping
--
-The program supports named vertices (like A, B, C, etc.).
-It maintains an array of vertex names and maps them to integer indices for processing.
-int findVertexIndex(Vertex vertices[], int *count, char name[])
-If a vertex name is new, it is added to the list.
+---
 
-2.Reading the SIF File
--
-Each line of the file contains:
-Source  Target  Weight
+## 📌 A. Overview
+
+Prim’s Algorithm is a **greedy algorithm** for computing the MST of a weighted, undirected graph.
+
+### Key idea:
+- Begin with any vertex  
+- Repeatedly select the **minimum-weight edge** connecting a visited vertex to an unvisited vertex  
+- Continue until all vertices are included  
+
+This program extends Prim’s Algorithm by supporting **named vertices** (e.g., A, B, C), commonly used in biological and network interaction SIF files.
+
+---
+
+## 📌 B. Key Concepts
+
+| Term | Description |
+|------|-------------|
+| **MST (Minimum Spanning Tree)** | A tree connecting all vertices with minimum total edge weight and no cycles |
+| **Greedy Choice** | Selects the smallest available edge expanding the tree |
+| **Adjacency Matrix** | Graph stored in a 2D matrix for easy weight lookup |
+
+---
+
+## 📌 C. Program Structure
+
+### 🔹 1. Vertex Mapping
+The SIF file may contain **named** vertices (A, B, C, ...).  
+The program maintains a list of vertex names and assigns each a numerical index.
+
+Function:
+
+```c
+int findVertexIndex(Vertex vertices[], int *count, char name[]);
+```
+
+- If a name already exists → return its index  
+- If new → add it to the vertex list  
+
+---
+
+### 🔹 2. Reading the SIF File
+Each line of the SIF file contains:
+
+```
+Source   Target   Weight
+```
 
 Example:
 
+```
 A B 4
 A C 3
 B C 2
 B D 5
 C D 7
+```
 
-This information is read and stored in an adjacency matrix.
+The program:
 
-3.Prim’s Algorithm Steps
--
-1.Initialize all vertex keys as infinity (INF).
-2.Start with the first vertex and set its key to 0.
-3.At each step, pick the vertex with the minimum key that is not yet included in MST.
-4.Update the key values of its adjacent vertices if a smaller weight edge is found.
-5.Repeat until all vertices are included in the MST.
+- Reads each line  
+- Maps vertex names to indices  
+- Stores weights in an adjacency matrix  
+- Treats graph as **undirected**  
 
-The helper function minKey() selects the next vertex with the minimum edge weight.
+---
 
-4.Output
--
-Once the MST is built, the program prints:
--Each edge included in the MST
--The total cost of the MST
+### 🔹 3. Prim’s Algorithm Steps
 
-D. Time Complexity
--
-For a graph with V vertices:
-O(V²) using an adjacency matrix.
+1. Initialize all vertex keys to **infinity (INF)**  
+2. Choose a starting vertex and set its key = 0  
+3. Repeat:
+   - Pick the unvisited vertex with the **minimum key** (`minKey()`)
+   - Include it in the MST
+   - Update keys of adjacent vertices if a lighter edge is found  
+4. Continue until all vertices are included  
 
-Program Flow
--
-1.Prompt user for the input file name (e.g., graph.sif).
-2.Read edges from the file and construct the adjacency matrix.
-3.Run Prim’s Algorithm.
-4.Display the MST edges and total minimum cost.
+Helper function:
+- `minKey()` → selects the next vertex with smallest connecting edge  
 
-Example
--
-Input File (graph.sif)
-A B 4
-A C 3
-B C 2
-B D 5
-C D 7
+---
 
-Output
--
+### 🔹 4. Output
+
+After computing the MST, the program prints:
+
+- Each selected edge in the MST  
+- Total minimum cost of the spanning tree  
+
+Example Output:
+
+```
 Minimum Spanning Tree using Prim's Algorithm:
 A - C : 3
 C - B : 2
 B - D : 5
 Total Minimum Cost = 10
+```
 
-Explanation of Output
--
--The MST connects all four vertices (A, B, C, D).
--The chosen edges have the minimum total cost.
--The total weight = 3 + 2 + 5 = 10.
+---
 
-Key Features
--
--Reads graph directly from a .sif file.
--Supports vertex names (not just numbers).
--Constructs undirected weighted graphs.
--Implements Prim’s algorithm efficiently using adjacency matrix representation.
--Displays total MST cost.
+## 📌 D. Time Complexity
 
-Conclusion
--
-This program demonstrates the application of Prim’s Algorithm for Minimum Spanning Tree construction using real-world SIF graph data.
-It’s useful in network design, circuit layout, and clustering problems — wherever minimal connection cost is essential.
+Using an **adjacency matrix**, Prim’s Algorithm runs in:
+
+\[
+O(V^2)
+\]
+
+Suitable for moderate-size graphs.
+
+---
+
+## 📌 Program Flow
+
+1. Ask user for input file name (e.g., *graph.sif*)  
+2. Read SIF file and construct adjacency matrix  
+3. Run Prim’s Algorithm  
+4. Display MST edges and total cost  
+
+---
+
+## 📌 Example
+
+### **Input File (graph.sif)**
+
+```
+A B 4
+A C 3
+B C 2
+B D 5
+C D 7
+```
+
+### **Output**
+
+```
+Minimum Spanning Tree using Prim's Algorithm:
+A - C : 3
+C - B : 2
+B - D : 5
+Total Minimum Cost = 10
+```
+
+### Explanation
+
+- MST connects **A, B, C, D**  
+- Edges chosen minimize total cost  
+- Total = 3 + 2 + 5 = **10**  
+
+---
+
+## 📌 Key Features
+
+- Reads graph directly from a `.sif` file  
+- Supports named vertices (A, B, C, …)  
+- Undirected, weighted graph representation  
+- Efficient implementation using adjacency matrix  
+- Output includes MST edges and total cost  
+
+---
+
+## 📌 Conclusion
+
+This program demonstrates how **Prim’s Algorithm** can be applied to real-world SIF graph data to construct a **Minimum Spanning Tree**.  
+Useful in:
+
+- Network design  
+- Circuit and PCB layout  
+- Clustering algorithms  
+- Graph analysis and modelling  
+
+Wherever minimal-cost connectivity is required.
+
+
