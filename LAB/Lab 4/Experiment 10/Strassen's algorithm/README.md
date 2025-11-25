@@ -1,75 +1,136 @@
-Strassen’s Matrix Multiplication Algorithm
-=
-Aim
--
-To implement Strassen’s Matrix Multiplication Algorithm for multiplying two square matrices efficiently.
+# Strassen’s Matrix Multiplication – C Implementation
 
-Objective
--
-To multiply two square matrices using divide and conquer approach that reduces the time complexity compared to the conventional matrix multiplication method.
+This code implements **Strassen’s Algorithm**, an optimized divide-and-conquer method for multiplying two square matrices faster than the conventional matrix multiplication algorithm.
 
-Matrix Multiplication
--
-For two matrices A and B of size n × n, the traditional method requires O(n³) multiplications.
-Strassen’s algorithm reduces the number of multiplications by using a divide and conquer approach.
+Strassen’s method reduces the number of recursive multiplications from 8 to **7**, lowering the time complexity and improving performance for large matrices.
 
-Strassen’s Algorithm Concept
--
-Strassen observed that instead of performing 8 recursive multiplications (as in the naive divide-and-conquer approach), the same result can be achieved using 7 multiplications and some additions/subtractions.
+---
 
-Given two matrices divided into four submatrices:
+## 📌 Aim
 
-A = | A11  A12 |      B = | B11  B12 |
-    | A21  A22 |          | B21  B22 |
+To multiply two square matrices efficiently using **Strassen’s Divide and Conquer Algorithm**.
 
+---
 
-He defined 7 new matrices as:
+## 📌 Objective
 
-M1 = (A11 + A22) × (B11 + B22)
-M2 = (A21 + A22) × B11
-M3 = A11 × (B12 - B22)
-M4 = A22 × (B21 - B11)
-M5 = (A11 + A12) × B22
-M6 = (A21 - A11) × (B11 + B12)
-M7 = (A12 - A22) × (B21 + B22)
+- Implement matrix multiplication using Strassen’s recursive formula  
+- Reduce the number of multiplications compared to the traditional method  
+- Demonstrate how divide-and-conquer improves asymptotic complexity  
 
+---
 
-Then the resulting product matrix C = A × B is obtained as:
+## 📌 Background — Matrix Multiplication
 
-C11 = M1 + M4 - M5 + M7
-C12 = M3 + M5
-C21 = M2 + M4
-C22 = M1 - M2 + M3 + M6
+For two matrices \( A \) and \( B \) of size \( n \times n \):
 
-Algorithm Steps
--
-1.Divide each matrix into four submatrices.
-2.Compute M1 to M7 using the above formulas recursively.
-3.Combine the results to form the resultant matrix C.
-4.Continue until the base case (1×1 matrix) is reached.
+- **Traditional Method:**  
+  \[
+  O(n^3)
+  \]
+- Uses triple-nested loops
 
-Time Complexity
--
--Strassen’s Algorithm: O(n^log₂7) ≈ O(n^2.81)
--Traditional Method: O(n³)
-Thus, Strassen’s algorithm is faster for larger matrices.
+Strassen’s Algorithm improves this using recursion.
 
-Example
--
-Input
-Enter the size of matrix (power of 2): 2
+---
+
+## 📌 Strassen’s Algorithm — Concept
+
+Given:
+
+\[
+A =
+\begin{bmatrix}
+A_{11} & A_{12} \\
+A_{21} & A_{22}
+\end{bmatrix},
+\qquad
+B =
+\begin{bmatrix}
+B_{11} & B_{12} \\
+B_{21} & B_{22}
+\end{bmatrix}
+\]
+
+Naive divide-and-conquer uses **8 multiplications**.
+
+Strassen reduces this to **7 multiplications**:
+
+### 🔹 Strassen’s 7 Products
+
+\[
+\begin{aligned}
+M_1 &= (A_{11}+A_{22})(B_{11}+B_{22}) \\
+M_2 &= (A_{21}+A_{22})B_{11} \\
+M_3 &= A_{11}(B_{12}-B_{22}) \\
+M_4 &= A_{22}(B_{21}-B_{11}) \\
+M_5 &= (A_{11}+A_{12})B_{22} \\
+M_6 &= (A_{21}-A_{11})(B_{11}+B_{12}) \\
+M_7 &= (A_{12}-A_{22})(B_{21}+B_{22})
+\end{aligned}
+\]
+
+### 🔹 Final Matrix C = A × B
+
+\[
+\begin{aligned}
+C_{11} &= M_1 + M_4 - M_5 + M_7 \\
+C_{12} &= M_3 + M_5 \\
+C_{21} &= M_2 + M_4 \\
+C_{22} &= M_1 - M_2 + M_3 + M_6
+\end{aligned}
+\]
+
+---
+
+## 📌 Algorithm Steps
+
+1. Divide matrices A and B into 4 submatrices each  
+2. Compute \( M_1 \) through \( M_7 \) recursively  
+3. Use the Strassen formulas to compute \( C_{11}, C_{12}, C_{21}, C_{22} \)  
+4. Combine submatrices into full matrix C  
+5. Recursively continue until base case **1×1 matrix**
+
+---
+
+## 📌 Time Complexity
+
+| Method | Complexity |
+|--------|------------|
+| **Strassen’s Algorithm** | \( O(n^{\log_2 7}) \approx O(n^{2.81}) \) |
+| **Traditional Multiplication** | \( O(n^3) \) |
+
+Strassen becomes beneficial for **large matrices**, especially when n is a power of two.
+
+---
+
+## 📌 Example
+
+### **Input**
+```
+Enter size of matrix (power of 2): 2
 Enter elements of matrix A:
 1 2
 3 4
 Enter elements of matrix B:
 5 6
 7 8
+```
 
-Output
+### **Output**
+```
 Resultant Matrix (A × B):
 19 22
 43 50
+```
 
-Result
--
-Strassen’s algorithm successfully multiplies two matrices using divide and conquer approach, reducing the number of multiplications from 8 to 7 and achieving better computational efficiency than the conventional method.
+---
+
+## 📌 Result
+
+Strassen’s Algorithm successfully multiplies matrices using divide-and-conquer:
+
+- Reduces **8 multiplications → 7 multiplications**  
+- Achieves better asymptotic performance than the classical method  
+- Demonstrates an important concept in fast matrix multiplication research  
+
