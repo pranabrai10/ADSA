@@ -1,114 +1,190 @@
-Overview
+# Defective Coin Finder – Divide & Conquer Using Simulated Balance Scale
 
--This program identifies a defective (lighter) coin from a set of coins using a divide-and-conquer approach with a simulated balance scale.
--The balance scale compares the sum of weights of two equal groups of coins.
--The algorithm recursively divides the coin set into halves until it isolates the defective coin.
-Finally, a verification step confirms the defective coin against a known good one.
+This program identifies a **single defective (lighter) coin** from a collection of coins using a **divide-and-conquer algorithm**.  
+It simulates a physical **balance scale** that compares the weight of two groups, recursively narrowing down the location of the defective coin.
 
+---
 
-Key Features
+## 📌 Overview
 
--Divide & Conquer Algorithm – Efficiently narrows down the defective coin.
--Balance Simulation – Mimics the functionality of a physical balance scale.
--Verification Step – Ensures correctness by comparing the suspected coin with a reference coin.
--Dynamic Input – Works for any number of coins provided by the user.
+The program:
 
+- Uses a **simulated weighing scale** that compares the total weights of two groups.
+- Applies **divide & conquer** to repeatedly cut the search space in half.
+- Isolates the suspected defective coin.
+- Performs a **verification step** to ensure correctness.
+- Works for **any number of coins**, as long as at most one coin is defective and lighter.
 
-Function Documentation
+This approach models classic algorithmic puzzles and introduces recursive problem-solving strategies.
 
-1. weigh()
+---
 
+## 📌 Key Features
+
+- **Divide & Conquer Logic**  
+  Efficiently narrows the search from *n* coins to *1* in only *O(log n)* comparisons.
+
+- **Balance Scale Simulation**  
+  The `weigh()` function mimics a real balance scale:
+  - returns which side is lighter
+  - or if both sides are equal
+
+- **Verification Step**  
+  Confirms the candidate coin by comparing it with a known good coin.
+
+- **Dynamic User Input**  
+  Works for any `n`, with arbitrary coin weights.
+
+---
+
+## 📌 Function Documentation
+
+### 1️⃣ `weigh()`
+
+```c
 int weigh(int coins[], int a_start, int b_start, int len);
+```
 
-Description:
-Simulates weighing two groups of coins on a balance.
+**Purpose:**  
+Simulates weighing two equal-sized groups of coins.
 
-Parameters:
-coins[] : Array of coin weights.
-a_start : Starting index of group A.
-b_start : Starting index of group B.
-len : Number of coins in each group.
+**Parameters:**
+- `coins[]` – array of coin weights  
+- `a_start` – start index of group A  
+- `b_start` – start index of group B  
+- `len` – number of coins in each group  
 
-Returns:
--1 → Group A lighter
-1 → Group B lighter
-0 → Both groups equal
+**Returns:**
+- `-1` → Group A is lighter  
+- ` 1` → Group B is lighter  
+- ` 0` → Both groups weigh the same  
 
+---
 
-2. findDefective()
+### 2️⃣ `findDefective()`
 
+```c
 int findDefective(int coins[], int start, int n);
+```
 
-Description:
-Recursively finds the index of the defective coin using a divide-and-conquer approach.
+**Purpose:**  
+Recursively locates the defective (lighter) coin.
 
-Parameters:
-coins[] : Array of coin weights.
-start : Starting index for the search.
-n : Number of coins in the current segment.
+**Parameters:**
+- `coins[]` – coin weights  
+- `start` – starting index of the current segment  
+- `n` – number of coins in the segment  
 
-Logic:
-Divide the set of coins into two halves.
-Weigh both halves.
-Recursively search in the lighter half.
-If balanced and n is odd, check the excluded coin.
+**Logic:**
+1. Divide coins into two equal halves.  
+2. Weigh both halves using `weigh()`.  
+3. If one half is lighter → recurse into that half.  
+4. If equal and one leftover coin exists → that leftover is checked.  
+5. If equal and no leftover → no defective coin.
 
-Returns:
-Index of the defective coin (candidate).
--1 if no defective coin found.
+**Returns:**  
+Index of the suspected coin (0-based), or `-1` if none found.
 
+---
 
-3. verify()
+### 3️⃣ `verify()`
 
+```c
 int verify(int coins[], int n, int candidate);
+```
 
-Description:
-Validates the defective coin candidate by comparing it with a known good coin.
+**Purpose:**  
+Confirms that the candidate coin is actually lighter.
 
-Parameters:
-coins[] : Array of coin weights.
-n : Total number of coins.
-candidate : Index of the suspected defective coin.
+**Parameters:**
+- `coins[]` – coin weight array  
+- `n` – number of coins  
+- `candidate` – suspected defective index  
 
-Returns:
-Candidate index if confirmed defective.
--1 if no defective coin found.
+**Logic:**
+- Compare candidate with the first known good coin (the first coin that is not the candidate).
+- If candidate < good coin → confirmed.
+- Else → not defective.
 
+**Returns:**  
+Confirmed defective index, or `-1` if verification fails.
 
-4. main()
+---
 
+### 4️⃣ `main()`
+
+```c
 int main();
+```
 
-Description:
-Handles user input, executes the search, and displays the result.
+**Program Flow:**
 
-Steps:
--Reads number of coins.
--Allocates memory for storing weights.
--Accepts coin weights from the user.
--Calls findDefective() to get a candidate coin.
--Verifies the candidate using verify().
--Prints the defective coin’s position or reports no defect.
+1. Read number of coins `n`.  
+2. Allocate memory for coin weights.  
+3. Input the weights from the user.  
+4. Call `findDefective()` to get a candidate.  
+5. Call `verify()` to confirm.  
+6. Display the result.  
 
-Algorithm Complexity
-Time Complexity: O(log n) (due to divide & conquer).
-Space Complexity: O(log n) (due to recursive calls).
+---
 
-Sample Input/Output
+## 📊 Algorithm Complexity
 
-Input 1:
+| Operation              | Complexity |
+|------------------------|-----------|
+| **Time Complexity**    | O(log n)  |
+| **Space Complexity**   | O(log n) (recursive stack) |
+
+Efficient even for very large `n`.
+
+---
+
+## 📝 Sample Input/Output
+
+### **Input 1**
+```
 Enter number of coins: 5
 Enter weights of 5 coins:
 10 10 9 10 10
-Output 1:
-Defective (lighter) coin is at position 2 (0-based index).
+```
 
-Input 2:
+### **Output 1**
+```
+Defective (lighter) coin is at position 2 (0-based index).
+```
+
+---
+
+### **Input 2**
+```
 Enter number of coins: 4
 Enter weights of 4 coins:
 10 10 10 10
-Output 2:
-No defective coin found. All coins are perfect.
-Fault detection problems where one faulty element differs slightly from the others.
+```
 
-Teaching divide-and-conquer algorithms and recursive problem-solving.
+### **Output 2**
+```
+No defective coin found. All coins are perfect.
+```
+
+---
+
+## 🎯 Applications
+
+- Fault detection in manufacturing systems  
+- Identifying defective components in hardware  
+- Puzzle-solving & competitive programming  
+- Teaching **divide and conquer**, recursion, and algorithm analysis  
+
+---
+
+## ✅ Conclusion
+
+This program provides a clean and efficient implementation of the classic **defective coin problem** using:
+
+- recursive divide & conquer  
+- simulated weighing  
+- verification for correctness  
+
+It is an excellent demonstration of how algorithmic thinking can drastically reduce problem complexity.
+
