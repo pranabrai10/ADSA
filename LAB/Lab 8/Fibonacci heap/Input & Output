@@ -1,0 +1,131 @@
+=== Fibonacci Heap Menu ===
+1. Insert
+2. Find-Min
+3. Extract-Min
+4. Decrease-Key
+5. Delete
+6. Display Root List
+7. Exit
+Enter choice: 1
+Enter value to insert: 10
+
+=== Fibonacci Heap Menu ===
+1. Insert
+2. Find-Min
+3. Extract-Min
+4. Decrease-Key
+5. Delete
+6. Display Root List
+7. Exit
+Enter choice: 1
+Enter value to insert: 20
+
+=== Fibonacci Heap Menu ===
+1. Insert
+2. Find-Min
+3. Extract-Min
+4. Decrease-Key
+5. Delete
+6. Display Root List
+7. Exit
+Enter choice: 1
+Enter value to insert: 30
+
+=== Fibonacci Heap Menu ===
+1. Insert
+2. Find-Min
+3. Extract-Min
+4. Decrease-Key
+5. Delete
+6. Display Root List
+7. Exit
+Enter choice: 1
+Enter value to insert: 40
+
+=== Fibonacci Heap Menu ===
+1. Insert
+2. Find-Min
+3. Extract-Min
+4. Decrease-Key
+5. Delete
+6. Display Root List
+7. Exit
+Enter choice: 1
+Enter value to insert: 50
+
+=== Fibonacci Heap Menu ===
+1. Insert
+2. Find-Min
+3. Extract-Min
+4. Decrease-Key
+5. Delete
+6. Display Root List
+7. Exit
+Enter choice: 6
+Root List: 10 50 40 30 20 
+
+=== Fibonacci Heap Menu ===
+1. Insert
+2. Find-Min
+3. Extract-Min
+4. Decrease-Key
+5. Delete
+6. Display Root List
+7. Exit
+Enter choice: 2
+Minimum = 10
+
+=== Fibonacci Heap Menu ===
+1. Insert
+2. Find-Min
+3. Extract-Min
+4. Decrease-Key
+5. Delete
+6. Display Root List
+7. Exit
+Enter choice: 3
+Extracted Min = 10
+
+=== Fibonacci Heap Menu ===
+1. Insert
+2. Find-Min
+3. Extract-Min
+4. Decrease-Key
+5. Delete
+6. Display Root List
+7. Exit
+Enter choice: 6
+Root List: 20 40 
+
+=== Fibonacci Heap Menu ===
+1. Insert
+2. Find-Min
+3. Extract-Min
+4. Decrease-Key
+5. Delete
+6. Display Root List
+7. Exit
+Enter choice: 4
+Enter existing key: 30
+Enter new smaller key: 25
+
+=== Fibonacci Heap Menu ===
+1. Insert
+2. Find-Min
+3. Extract-Min
+4. Decrease-Key
+5. Delete
+6. Display Root List
+7. Exit
+Enter choice: 6
+Root List: 20 40 
+
+=== Fibonacci Heap Menu ===
+1. Insert
+2. Find-Min
+3. Extract-Min
+4. Decrease-Key
+5. Delete
+6. Display Root List
+7. Exit
+Enter choice: 7
