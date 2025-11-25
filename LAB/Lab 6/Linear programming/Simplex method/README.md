@@ -1,101 +1,142 @@
-Simplex Method – Linear Programming Optimization
-Overview
-=
-This project implements the Simplex Method, a fundamental algorithm used in Linear Programming to find the optimal solution of a linear objective function subject to linear constraints.
-The algorithm works by converting the LP problem into a tableau and iteratively improving the solution until the maximum value of the objective function is reached.
+# Simplex Method – Linear Programming Optimization (C Implementation)
 
-Objective
--
-To provide a simple and clear C implementation of the Simplex Algorithm for solving maximization problems with “≤” type constraints and non-negative variables.
+This code implements the **Simplex Method**, one of the most widely used algorithms in **Linear Programming (LP)** for optimizing linear objective functions subject to linear constraints.
 
-Concept
--
-The Simplex Method operates on the idea of improving an initial feasible solution step by step.
+The algorithm transforms the LP into a **simplex tableau** and iteratively moves toward the optimal solution by improving the objective value at each step.
 
-Each inequality constraint is converted into an equality by adding slack variables.
+This implementation focuses on **maximization problems** with:
+- “≤” type constraints  
+- Non-negative variables  
 
-The entire problem is represented in a simplex tableau.
+Designed for clarity and educational understanding.
 
-The algorithm selects a variable to enter the solution and another to leave, using mathematical rules.
+---
 
-Pivot operations are applied to update the tableau and move to a better solution.
+## 📌 Features
 
-The process stops when no further improvement is possible.
+### ✔ Core Capabilities
+| Feature | Description |
+|---------|-------------|
+| **Slack Variable Support** | Converts ≤ constraints into equalities |
+| **Simplex Tableau Construction** | Full tableau for LP representation |
+| **Entering Variable Selection** | Finds variable that improves objective |
+| **Leaving Variable Selection** | Uses minimum ratio test |
+| **Pivot Operation** | Updates tableau to next feasible solution |
+| **Iterative Improvement** | Repeats until optimality is reached |
 
-This method guarantees finding the optimal solution if it exists.
+---
 
-Major Components
--
-1. Slack Variables
+## 📌 Concept Overview
 
-Added to convert “≤” constraints into equalities.
-Example:
+The Simplex Method improves a feasible solution **step by step** by moving along the edges of the feasible region.
 
-x1 + 2x2 ≤ 14⇒x1 + 2x2 + s1=14
+### Key Ideas:
+- Convert inequalities to equalities using **slack variables**
+- Represent the full system in a **simplex tableau**
+- Choose a variable to **enter** (improve the objective)
+- Choose a variable to **leave** (maintain feasibility)
+- Apply a **pivot operation** to update the tableau
+- Stop when no further improvement is possible
 
-2. Simplex Tableau
+This process guarantees the optimal solution (if it exists) for feasible LPs.
 
-A structured matrix containing:
+---
 
-Coefficients of decision variables
+## 📌 Major Components
 
-Slack variable columns
+### 🔹 1. Slack Variables  
+Each “≤” constraint becomes an equality.
 
-Right-hand side values (RHS)
+Example:  
+\[
+x_1 + 2x_2 \le 14 
+\quad\Rightarrow\quad 
+x_1 + 2x_2 + s_1 = 14
+\]
 
-Objective function row (Z-row)
+Slack variables form an identity matrix inside the tableau.
 
-Used for all Simplex calculations.
+---
 
-3. Entering Variable Selection
+### 🔹 2. Simplex Tableau  
+A structured 2D matrix containing:
 
-The entering variable is chosen as the most negative value in the objective row, indicating the direction of improvement.
+- Coefficients of variables  
+- Slack variable columns  
+- Right-hand side (RHS) values  
+- Objective function row (Z-row)
 
-4. Leaving Variable Selection
+This tableau is updated at every iteration.
 
-The leaving variable is determined by the minimum ratio test:
+---
 
-RHS÷pivot column value
+### 🔹 3. Entering Variable (Pivot Column)
+Select the **most negative** coefficient in the Z-row.  
+This direction improves the objective value.
 
-Ensures the next solution remains feasible.
+---
 
-5. Pivot Operation
+### 🔹 4. Leaving Variable (Pivot Row)
+Use the **minimum ratio test**:
 
-Divide the pivot row by the pivot value
+\[
+\text{ratio} = \frac{\text{RHS}}{\text{pivot column value}}
+\]
 
-Adjust other rows to make all other values in the pivot column zero
+Ensures the solution remains feasible.
 
-Update the basic variable column accordingly
+---
 
-Algorithm Steps
--
-1.Input the number of variables and constraints.
-2.Construct the initial simplex tableau.
-3.Identify the entering variable (most negative coefficient in Z-row).
-4.Perform the minimum ratio test to find the leaving variable.
-5.Apply the pivot operation.
-6.Repeat steps 3–5 until no negatives remain in the Z-row.
-7.Read the optimal values from the final tableau.
+### 🔹 5. Pivot Operation
+Once pivot row and column are identified:
 
-Data Structures Used
--
--2D array for storing the simplex tableau
--Array of basic variables to track which variables are currently in the basis
--Array of ratios used during the minimum ratio test
--Simple integer and floating-point variables for pivot computation
+1. Divide pivot row by pivot element  
+2. Eliminate pivot column values from all other rows  
+3. Update basis variables  
 
-Advantages
--
--Simple and easy to understand
--Shows each iteration clearly (educational)
--Guaranteed optimal solution for feasible maximization problems
--Good for small LP problems and learning the simplex technique
+This moves the solution to an adjacent extreme point.
 
-Limitations
--
--Supports only maximization problems
--Works only with ≤ constraints
--Cannot solve ≤ / ≥ / = constraints requiring artificial variables
--Not suitable for large-scale industrial LP problems
+---
 
-Numerical precision may cause minor floating-point errors
+## 📌 Algorithm Steps
+
+1. Input:
+   - Number of decision variables  
+   - Number of constraints  
+
+2. Construct the initial simplex tableau  
+3. Identify the **entering variable** (most negative Z-row coefficient)  
+4. Perform **minimum ratio test** to choose the leaving variable  
+5. Apply **pivot operation**  
+6. Repeat Steps 3–5 until Z-row has no negative values  
+7. Read optimal solution from final tableau  
+
+---
+
+## 📌 Data Structures Used
+
+- **2D array** → simplex tableau  
+- **Array of basic variables** → tracks which variables are in the basis  
+- **Array for ratios** → used in minimum ratio test  
+- **Scalars** → pivot element, pivot row/column indices  
+
+---
+
+## 📌 Advantages
+
+- Very simple and easy to understand  
+- Shows each iteration clearly → great for learning  
+- Guaranteed optimal solution for feasible maximization problems  
+- Suitable for small LP examples  
+- No advanced libraries required  
+
+---
+
+## 📌 Limitations
+
+- Supports only **maximization** problems  
+- Works only with **≤ constraints**  
+- Does **not** handle ≥, = constraints requiring artificial variables  
+- Not suitable for large-scale industrial LP problems  
+- Floating-point arithmetic may introduce minor numerical errors  
+
