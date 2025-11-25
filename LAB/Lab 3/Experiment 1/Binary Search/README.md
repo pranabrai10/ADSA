@@ -1,124 +1,161 @@
-Binary Search
-=
-This C program demonstrates the binary search algorithm using two different approaches:
+# Binary Search – Recursive & Iterative Approaches (C Implementation)
 
-Recursive approach
-Iterative approach
+This code demonstrates the **Binary Search algorithm** implemented in C using:
 
-It also includes a sorting function (Bubble Sort) to ensure that the input array is sorted before searching.
+- **Recursive Binary Search**
+- **Iterative Binary Search**
 
-Step-by-Step Explanation
--
-(a) Sorting the Array
--
-Before performing binary search, the program calls the function:
--sortArray(arr, n);
-This function uses Bubble Sort, a simple comparison-based sorting algorithm.
+It also includes a **Bubble Sort** routine to ensure the input array is sorted before performing binary search.
 
-How Bubble Sort works:
+---
 
--It repeatedly compares each pair of adjacent elements in the array.
--If an element is greater than the next element, they are swapped.
--After each pass, the largest element “bubbles up” to its correct position.
--This continues until the entire array becomes sorted.
--This step ensures that binary search can be applied correctly.
+## 📌 Overview
 
-(b) Recursive Binary Search Function
--
-Function definition:
-int binarySearchRecursive(int arr[], int low, int high, int key)
+Binary Search is a classic **divide-and-conquer** algorithm that efficiently searches for an element in a **sorted** array by repeatedly halving the search interval.
 
-Working principle:
+This program:
 
--The function divides the array into halves recursively.
--It finds the middle index using (low + high) / 2.
--Then it compares the middle element with the key.
+- Sorts the input array  
+- Searches for a key using both recursive and iterative methods  
+- Displays the search results with indices  
 
-Three possible cases:
-  -If arr[mid] == key, the function returns mid (the key is found).
-  -If arr[mid] > key, it searches only in the left half (calls itself recursively with high = mid - 1).
-  -If arr[mid] < key, it searches only in the right half (calls itself recursively with low = mid + 1).
+---
 
-If low becomes greater than high, the key is not present, and the function returns -1.
+## 📌 Step-by-Step Explanation
 
-This approach uses recursion to repeatedly divide the problem into smaller subproblems.
+### 🔹 (a) Sorting the Array — Bubble Sort
 
-(c) Iterative Binary Search Function
--
-Function definition:
--int binarySearchIterative(int arr[], int n, int key)
+Before searching, the program calls:
 
-Working principle:
+```c
+sortArray(arr, n);
+```
 
--It performs the same logic as the recursive version, but using a while loop instead of recursion.
--It starts with low = 0 and high = n - 1.
--Inside the loop:
-   -Calculates the middle index mid = (low + high) / 2.
-   -Compares arr[mid] with key.
-   -Adjusts low and high accordingly to narrow down the search range.
--The loop continues until the key is found or the range becomes invalid (low > high).
+**Bubble Sort** repeatedly compares adjacent elements and swaps them if they are in the wrong order.
 
-This method avoids recursion and is more memory-efficient.
+Key properties:
 
-(d) Main Function
--
-Steps performed in main():
+- Largest element “bubbles” to the end after each pass  
+- Repeats until entire array is sorted  
+- Ensures binary search operates correctly  
 
--The user enters the number of elements and the array values.
--The array is sorted using Bubble Sort.
--The sorted array is displayed.
--The user enters the key to search.
--Both recursive and iterative binary search functions are called.
--The index position of the key (if found) is displayed.
+---
 
-Example Execution
--
-Input:
+### 🔹 (b) Recursive Binary Search
 
+Function:
+
+```c
+int binarySearchRecursive(int arr[], int low, int high, int key);
+```
+
+Working logic:
+
+1. Compute mid index:  
+   ```
+   mid = (low + high) / 2
+   ```
+2. Compare:
+   - If `arr[mid] == key` → return `mid`
+   - If `arr[mid] > key` → search left half
+   - If `arr[mid] < key` → search right half  
+3. When `low > high`, return `-1` (not found)
+
+This version uses **recursion** and repeatedly divides the search space.
+
+---
+
+### 🔹 (c) Iterative Binary Search
+
+Function:
+
+```c
+int binarySearchIterative(int arr[], int n, int key);
+```
+
+Working logic:
+
+1. Start with:
+   ```
+   low = 0, high = n - 1
+   ```
+2. Loop until found or invalid:
+   - Compute mid  
+   - Compare and adjust low/high  
+3. Return index if found, otherwise `-1`
+
+This approach avoids recursion and uses constant memory.
+
+---
+
+### 🔹 (d) Main Function Workflow
+
+1. User inputs array size and elements  
+2. Array is sorted using Bubble Sort  
+3. Sorted array is displayed  
+4. User inputs key to search  
+5. Both binary search methods run  
+6. Results (index positions) are printed  
+
+---
+
+## 📌 Example Execution
+
+### **Input**
+```
 Enter number of elements: 5
 Enter 5 integers: 8 3 6 1 9
 Enter the key to search: 6
+```
 
+### **Process**
+- Sorted array → `1 3 6 8 9`  
+- Binary Search searches for `6`
 
-Process:
-
-The array is sorted → 1 3 6 8 9
-The key 6 is compared using binary search logic.
-
-Output:
-
+### **Output**
+```
 Sorted Array: 1 3 6 8 9
 Recursive: Key 6 found at index 2
 Iterative: Key 6 found at index 2
+```
 
-4.Algorithmic Concept
--
-Binary Search Algorithm
--Binary search works on the principle of divide and conquer.
--The search space is divided into halves at every step.
--This reduces the time complexity from O(n) (linear search) to O(log n).
+---
 
-Advantages:
--Very efficient for large sorted datasets.
--Requires fewer comparisons than linear search.
+## 📌 Algorithmic Concept — Binary Search
 
-Disadvantages:
--Works only on sorted arrays.
+Binary search follows **divide and conquer**:
 
-5.Time and Space Complexity
--
-Operation                   	Best Case         	Worst Case        	Space Complexity
-Binary Search (Iterative)	      O(1)	             O(log n)	               O(1)
-Binary Search (Recursive)	      O(1)	             O(log n)	             O(log n)
-Bubble Sort	                    O(n)	              O(n²)	                 O(1)
+- Midpoint is computed  
+- Search space is halved every step  
+- Much faster than linear search  
 
-6.Conclusion
--
-This program demonstrates how binary search can be implemented using both recursion and iteration.
-The use of a sorting function ensures that the array is in the correct order before applying the search.
+### ✔ Advantages
+- Very efficient for large sorted datasets  
+- Only O(log n) comparisons  
 
-The recursive approach showcases the concept of function calls and the divide-and-conquer technique, while the iterative approach highlights how loops can be used to achieve the same result efficiently.
+### ✖ Limitation
+- Works **only** on sorted arrays  
 
-Overall, the program effectively illustrates both the logic and implementation of binary search in C.
+---
 
-Would you like me to format this version in Markdown (README.md) style for direct upload to GitHub (same content, but neatly formatted with headings and code blocks)?
+## 📌 Time & Space Complexity
+
+| Operation | Best Case | Worst Case | Space Complexity |
+|-----------|-----------|------------|------------------|
+| **Binary Search (Iterative)** | O(1) | O(log n) | O(1) |
+| **Binary Search (Recursive)** | O(1) | O(log n) | O(log n) (call stack) |
+| **Bubble Sort** | O(n) | O(n²) | O(1) |
+
+---
+
+## 📌 Conclusion
+
+This program demonstrates:
+
+- Both recursive and iterative forms of binary search  
+- Importance of sorted data before searching  
+- Divide-and-conquer (recursive) vs loop-based (iterative) logic  
+
+The implementation helps visualize how binary search efficiently finds elements while maintaining minimal time complexity.
+
+
