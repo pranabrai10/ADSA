@@ -1,68 +1,147 @@
-Quick Sort using Median-of-Three Pivot
-=
-This program implements the Quick Sort algorithm in C using the Median-of-Three pivot selection technique to improve efficiency.
-The Median-of-Three method helps in choosing a better pivot by taking the median value among the first, middle, and last elements of the partitioned array.
-This approach reduces the chances of encountering the worst-case time complexity, especially when the input array is already sorted or nearly sorted.
+# Quick Sort using Median-of-Three Pivot – C Implementation
 
-Explanation of the Code
--
-1.Swap Function
--
+This code implements **Quick Sort** in C using the **Median-of-Three pivot selection technique** to improve performance.  
+Choosing a good pivot reduces the risk of worst-case behavior and produces more balanced partitions—especially when the array is already sorted or nearly sorted.
+
+---
+
+## 📌 Overview
+
+Quick Sort is a **divide-and-conquer** sorting algorithm that works by:
+
+1. Selecting a pivot  
+2. Partitioning the array around the pivot  
+3. Recursively sorting the left and right partitions  
+
+This version uses **Median-of-Three** pivot selection for more robust performance.
+
+---
+
+## 📌 Why Median-of-Three?
+
+Instead of picking:
+
+- the first element  
+- or the last element  
+- or the middle element  
+
+Median-of-Three chooses the **median value among (first, middle, last)**.  
+This significantly reduces the chances of highly unbalanced partitions.
+
+Example bad cases avoided:
+
+- Already sorted input  
+- Reverse sorted input  
+- Nearly sorted sequences  
+
+---
+
+## 📌 Explanation of the Code
+
+### 🔹 1. Swap Function
+```c
 void swap(int *a, int *b)
-This function exchanges the values of two integers using a temporary variable. It is used frequently throughout the program to rearrange elements during sorting.
+```
+Swaps two integers using a temporary variable.  
+Used throughout the algorithm for rearranging elements.
 
-2.Median-of-Three Pivot Selection
--
+---
+
+### 🔹 2. Median-of-Three Pivot Selection
+```c
 int medianOfThree(int arr[], int low, int high)
+```
 
--Finds the first (low), middle (mid), and last (high) elements of the array.
--Sorts these three values to determine their median.
--The median element is used as the pivot, placed at position high - 1.
+Steps:
+- Identify first (`low`), middle (`mid`), and last (`high`) elements  
+- Sort these three values  
+- Place the median at position **high − 1**  
+- Return it as the pivot  
 
-This strategy ensures a better pivot choice, minimizing the chance of unbalanced partitions and improving overall efficiency.
+This produces a more stable pivot choice and lowers the chance of worst-case partitions.
 
-3.Partition Function
--
+---
+
+### 🔹 3. Partition Function
+```c
 int partition(int arr[], int low, int high)
+```
 
--The array is rearranged such that all elements less than the pivot are placed on the left, and those greater than the pivot are on the right.
--After rearrangement, the pivot is placed in its correct sorted position.
--Returns the index (pi) of the pivot for recursive sorting.
+The array is rearranged so that:
 
-4.Quick Sort Function
--
+- Elements **less than pivot** → left side  
+- Elements **greater than pivot** → right side  
+
+Finally, the pivot is placed in its correct sorted position, and the pivot index is returned.
+
+---
+
+### 🔹 4. Quick Sort Function
+```c
 void quickSort(int arr[], int low, int high)
+```
 
--Divides the array into subarrays based on the pivot.
--Recursively sorts the left and right subarrays.
--For small partitions (size ≤ 3), the function performs a simple manual sort instead of recursion to reduce overhead.
+- Recursively sorts left and right partitions  
+- Uses **Median-of-Three** to select pivot  
+- For small partitions (size ≤ 3), performs manual sorting for efficiency  
+- Combines recursion with optimized pivot selection  
 
-5.Main Function
--
-int main()
+This hybrid approach reduces overhead and improves real-world performance.
 
--Accepts user input for the number of elements and the elements themselves.
--Calls the quickSort() function to sort the array.
--Displays the final sorted array.
+---
 
-Algorithm Efficiency
+### 🔹 5. Main Function
 
-Case	             Time Complexity
-Best Case	          O(n log n)
-Average Case	      O(n log n)
-Worst Case	          O(n²) (minimized with median-of-three method)
+Handles user interaction:
 
-Space Complexity: O(log n) (due to recursion stack)
+- Reads number of elements  
+- Reads the array  
+- Calls `quickSort()`  
+- Displays the sorted result  
 
-Key Concepts
--
--Divide and Conquer: Quick Sort divides the array into smaller parts and sorts them independently.
--Median-of-Three: Improves pivot selection and prevents skewed partitions.
--Recursion: The algorithm calls itself to sort the left and right subarrays.
+---
 
-Example Run
--
+## 📌 Algorithm Efficiency
+
+| Case | Time Complexity |
+|------|-----------------|
+| **Best Case** | O(n log n) |
+| **Average Case** | O(n log n) |
+| **Worst Case** | O(n²) (rare with median-of-three) |
+
+**Space Complexity:**  
+- O(log n) → recursion stack
+
+Median-of-Three dramatically reduces the frequency of worst-case behavior.
+
+---
+
+## 📌 Key Concepts
+
+- **Divide and Conquer** — Split, conquer, and combine  
+- **Median-of-Three Pivoting** — More balanced partitions  
+- **Recursion** — Quick Sort calls itself for subproblems  
+- **In-place Sorting** — No extra arrays required  
+
+---
+
+## 📌 Example Run
+
+### **Input**
+```
 Enter number of elements: 5
 Enter 5 integers: 56 32 78 12 43
+```
+
+### **Output**
+```
 Sorted array using Quick Sort (median-of-three pivot):
 12 32 43 56 78
+```
+
+---
+
+## 📌 Conclusion
+
+This implementation demonstrates a practical enhancement to Quick Sort using **Median-of-Three pivot selection**, making the algorithm faster and more reliable for real data.
+
