@@ -1,137 +1,212 @@
-SIF File Parser and Graph Representation
--
-This program reads a Simple Interaction Format (SIF) file and constructs a graph representation of the network defined within it.
-SIF is a standard format used to represent biological networks, social networks, or interaction graphs, where each line represents a relationship between nodes.
+# SIF File Parser and Graph Representation – C Implementation
 
-A. Overview
--
-The program:
-1.Reads data from a .sif file line by line.
-2.Parses each line to extract the source node, interaction type, and target nodes.
-3.Builds an adjacency list representation of the graph.
-4.Displays the graph connections in a readable format.
+This code implements a **Simple Interaction Format (SIF)** file parser and constructs a **graph representation** using an adjacency list.  
+SIF files are widely used to represent **biological**, **social**, and **interaction** networks.
 
-B. What is a SIF File?
--
-The SIF (Simple Interaction Format) represents pairwise relationships between entities (nodes).
-Each line follows this structure:
-source_node  interaction_type  target_node1  target_node2 ...
+The program reads each line of a `.sif` file, extracts the nodes and interactions, builds the graph, and finally prints all adjacency lists.
 
-Example:
--
+---
+
+## 📌 A. Overview
+
+This program:
+
+1. Reads a `.sif` file line by line  
+2. Parses the **source node**, **interaction type**, and **target nodes**  
+3. Builds a **directed graph** using adjacency lists  
+4. Prints the graph structure in a readable format  
+
+This is especially useful in **network biology**, **data visualization**, and **graph mining** tasks.
+
+---
+
+## 📌 B. What Is a SIF File?
+
+A **SIF (Simple Interaction Format)** file describes relationships between nodes.
+
+### General structure:
+```
+source_node   interaction_type   target1   target2   ...
+```
+
+### Example:
+```
 A pp B
 A pp C
 B pd D
+```
 
-This defines the following relationships:
-  -A interacts with B and C via “pp” (protein-protein interaction)
-  -B interacts with D via “pd” (protein–DNA interaction)
+Meaning:
 
-C. Data Structures Used
--
-1.Adjacency List Representation
--
-The graph is stored as an array of vertices, where each vertex maintains a linked list of its adjacent nodes.
+- `A` interacts with `B` via **pp**  
+- `A` interacts with `C` via **pp**  
+- `B` interacts with `D` via **pd**  
 
+(*Interaction types are read but not used to modify the graph structure.*)
+
+---
+
+## 📌 C. Data Structures
+
+### 1️⃣ Node Structure (Linked List)
+```c
 typedef struct Node {
     int vertex;
     struct Node* next;
 } Node;
+```
+Represents an edge to another vertex.
 
+---
+
+### 2️⃣ Vertex Structure
+```c
 typedef struct {
     char name[MAX_NAME];
     Node* head;
 } Vertex;
+```
 
-Vertex stores the node’s name and a pointer to its adjacency list.
-Node represents a connection to another vertex (edge).
+Each vertex stores:
 
-2.Global Variables
--
+- Name of node  
+- Pointer to its adjacency list  
+
+---
+
+### 3️⃣ Global Variables
+```c
 Vertex graph[MAX_NODES];
 int nodeCount = 0;
+```
 
--graph[]: stores all vertices.
--nodeCount: tracks the total number of unique nodes.
+- `graph[]` → stores all unique nodes  
+- `nodeCount` → keeps track of how many distinct nodes have been added  
 
-D. Function Explanations
--
-1. getIndex(char name)
-    -Searches whether the given node name already exists in the graph.
-   -If found, returns its index.
-   -If not, adds a new vertex and initializes its adjacency list.
+---
 
-3. addEdge(int u, int v)
+## 📌 D. Function Descriptions
 
-Adds a directed edge from vertex u to vertex v by inserting a new node in the adjacency list.
+### 🔹 1. `getIndex(char name[])`
+- Checks if a node already exists  
+- If not, creates a new vertex entry  
+- Returns the index of the node  
 
-3. parseLine(char line)
--Reads a line from the SIF file.
--Extracts:
-   -Source node
-   -Interaction type (ignored for adjacency creation)
-   -Target nodes
--Calls getIndex() and addEdge() to create graph connections.
+Used to ensure all node names map to integer indices.
 
-4. printGraph()
-Displays all vertices and their adjacency lists in the format:
-Source -> Target1 Target2 ...
+---
 
-E. Program Flow
--
-1.The program opens the file network.sif for reading.
-2.Each valid (non-comment) line is parsed using the parseLine() function.
-3.Nodes are added to the adjacency list as they are discovered.
-4.Once the file is processed, the complete adjacency list is printed.
+### 🔹 2. `addEdge(int u, int v)`
+Adds a directed edge **u → v** by inserting a node into the linked list.
 
-F. Input File Example (network.sif)
--
+---
+
+### 🔹 3. `parseLine(char line[])`
+- Extracts:
+  - Source node  
+  - Interaction type  
+  - One or more target nodes  
+- Converts names to indices (via `getIndex()`)  
+- Adds directed edges for each target  
+
+---
+
+### 🔹 4. `printGraph()`
+Prints adjacency lists in the format:
+
+```
+A -> B C
+B -> D
+C -> D
+...
+```
+
+---
+
+## 📌 E. Program Flow
+
+1. Open the file `network.sif`  
+2. Read each line  
+3. Skip empty lines or comments (`# ...`)  
+4. Parse the content  
+5. Build adjacency lists  
+6. Print the full graph  
+
+---
+
+## 📌 F. Example Input (network.sif)
+
+```
 A pp B C
 B pp D
 C pp D
 D pp E
+```
 
-G. Output Example
--
+---
+
+## 📌 G. Example Output
+
+```
 Graph Adjacency List (from SIF):
 A -> C B
 B -> D
 C -> D
 D -> E
 E ->
+```
 
-H. Explanation of Output
--
--The adjacency list shows all vertices (A, B, C, D, E) and the nodes they are directly connected to.
--For instance, A -> C B means:
-    -There are edges from A to C
-    -And from A to B
+### Explanation:
+- `A` connects to `B` and `C`
+- `B` connects to `D`
+- `D` connects to `E`
+- `E` has no outgoing edges
 
-I. Advantages
--
--Supports dynamic creation of nodes while reading the file.
--Uses linked lists for efficient adjacency representation.
--Can handle up to 100 nodes with unique names.
--Skips comment lines (those starting with #) and blank lines automatically.
+---
 
-J. Limitations
--
--Only supports directed graphs (edges are one-way: A → B).
--Interaction type (e.g., pp, pd) is read but not used for analysis.
--File name is fixed (network.sif); user input for file name is not supported.
+## 📌 H. Advantages
 
-K. Applications
--
-This program is especially useful for:
--Bioinformatics: parsing protein–protein or gene interaction networks.
--Social networks: mapping influence or communication patterns.
--Graph visualization tools: preprocessing data before visualization (e.g., Cytoscape).
+✔ Automatically creates nodes as they are discovered  
+✔ Efficient adjacency list representation  
+✔ Supports up to 100+ unique node names  
+✔ Ignores comments and blank lines  
+✔ Simple and modular design  
 
-L. Conclusion
--
-This C program provides a clear and efficient way to:
--Parse SIF-format network data,
--Construct a graph using adjacency lists, and
--Display its structure in a readable format.
+---
 
-It serves as a foundation for advanced graph-based applications like network analysis, pathfinding, or visualization tools.
+## 📌 I. Limitations
+
+✘ Directed graph only (A → B does not imply B → A)  
+✘ Interaction types (pp, pd, etc.) are read but not processed  
+✘ Input file name is fixed (`network.sif`)  
+✘ No reverse lookup (target → source) unless added manually  
+
+---
+
+## 📌 J. Applications
+
+This parser is useful in:
+
+- **Bioinformatics:** protein–protein, gene–gene networks  
+- **Social network analysis**  
+- **Graph visualization (e.g., Cytoscape preprocessing)**  
+- **Network mining / clustering tasks**  
+- **Dependency graph construction**
+
+---
+
+## 📌 K. Conclusion
+
+This C implementation provides a clean and efficient way to:
+
+- Parse SIF network data  
+- Build adjacency lists dynamically  
+- Display the graph in a human-readable format  
+
+It serves as a foundation for more advanced graph algorithms such as:
+
+- BFS / DFS  
+- Shortest paths (Dijkstra, Floyd–Warshall)  
+- MST construction  
+- Network centrality analysis  
+- Graph visualization pipelines  
