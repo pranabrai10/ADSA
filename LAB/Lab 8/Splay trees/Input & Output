@@ -1,0 +1,95 @@
+===== SPLAY TREE MENU =====
+1. Insert
+2. Search
+3. Delete
+4. Inorder Traversal
+5. Preorder Traversal
+6. Exit
+Your choice: 1
+Enter value to insert: 10
+Inserted and splayed.
+
+===== SPLAY TREE MENU =====
+1. Insert
+2. Search
+3. Delete
+4. Inorder Traversal
+5. Preorder Traversal
+6. Exit
+Your choice: 1
+Enter value to insert: 20
+Inserted and splayed.
+
+===== SPLAY TREE MENU =====
+1. Insert
+2. Search
+3. Delete
+4. Inorder Traversal
+5. Preorder Traversal
+6. Exit
+Your choice: 1
+Enter value to insert: 30
+Inserted and splayed.
+
+===== SPLAY TREE MENU =====
+1. Insert
+2. Search
+3. Delete
+4. Inorder Traversal
+5. Preorder Traversal
+6. Exit
+Your choice: 1
+Enter value to insert: 40
+Inserted and splayed.
+
+===== SPLAY TREE MENU =====
+1. Insert
+2. Search
+3. Delete
+4. Inorder Traversal
+5. Preorder Traversal
+6. Exit
+Your choice: 1
+Enter value to insert: 50
+Inserted and splayed.
+
+===== SPLAY TREE MENU =====
+1. Insert
+2. Search
+3. Delete
+4. Inorder Traversal
+5. Preorder Traversal
+6. Exit
+Your choice: 2
+Enter value to search: 30
+Found 30 (now at root).
+
+===== SPLAY TREE MENU =====
+1. Insert
+2. Search
+3. Delete
+4. Inorder Traversal
+5. Preorder Traversal
+6. Exit
+Your choice: 4
+Inorder: 10 20 30 40 50 
+
+===== SPLAY TREE MENU =====
+1. Insert
+2. Search
+3. Delete
+4. Inorder Traversal
+5. Preorder Traversal
+6. Exit
+Your choice: 5
+Preorder: 30 20 10 40 50 
+
+===== SPLAY TREE MENU =====
+1. Insert
+2. Search
+3. Delete
+4. Inorder Traversal
+5. Preorder Traversal
+6. Exit
+Your choice: 6
+Exiting...
