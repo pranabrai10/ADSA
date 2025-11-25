@@ -1,77 +1,119 @@
-Floyd–Warshall Algorithm 
--
-The Floyd–Warshall Algorithm is a fundamental algorithm in graph theory used to find the shortest path between every pair of vertices in a weighted graph. It is a dynamic programming approach that efficiently computes all-pairs shortest paths, even for dense graphs.
+# Floyd–Warshall Algorithm – All-Pairs Shortest Path (C Implementation)
 
-Concept
--
-The algorithm works by considering each vertex as an intermediate node and checking whether including this vertex in the path between two other vertices results in a shorter distance.
+The **Floyd–Warshall Algorithm** is a classic **dynamic programming** method used to compute the **shortest paths between every pair of vertices** in a weighted graph.  
+It works efficiently for **dense graphs** and supports **positive and negative edge weights** (but not negative cycles).
 
-It updates the shortest path distance between all pairs of vertices step by step by comparing direct and indirect routes through intermediate vertices.
+This implementation uses an adjacency matrix and produces the complete all-pairs shortest path matrix.
 
-Mathematically, it is based on the recurrence relation:
+---
 
-dist[i][j]=min(dist[i][j], dist[i][k]+dist[k][j])
+## 📌 Concept
 
-Here,
-   -dist[i][j] represents the shortest distance from vertex i to vertex j.
-   -k represents the current intermediate vertex being considered.
+The algorithm checks whether including an intermediate vertex **k** between vertices **i** and **j** produces a shorter path:
 
-Working Principle
--
-1.The algorithm starts with an adjacency matrix of the graph, where:
-   -graph[i][j] contains the weight of the edge between vertex i and vertex j.
-   -If there is no edge, a large constant value (e.g., 99999) is used to represent infinity.
+\[
+\text{dist}[i][j] = \min(\text{dist}[i][j], \ \text{dist}[i][k] + \text{dist}[k][j])
+\]
 
-2.Initially, the distance matrix (dist) is the same as the adjacency matrix.
+Where:
 
-3.For each vertex k (as an intermediate vertex), the algorithm checks all pairs (i, j):
-  -If the path i → k → j is shorter than the current path i → j, update dist[i][j].
+- `dist[i][j]` → shortest distance from vertex *i* to vertex *j*  
+- `k` → current intermediate vertex being checked  
 
-4.After all iterations, the matrix dist contains the shortest distance between all vertex pairs.
+---
 
-Example
--
-Consider the following adjacency matrix for a graph with 4 vertices:
+## 📌 Working Principle
 
-From / To	0	1	2	3
-0	        0	3	∞	7
-1	        8	0	2	∞
-2	        5	∞	0	1
-3	        2	∞	∞	0
+### 1️⃣ Initialization
 
-After applying the Floyd–Warshall algorithm, the resulting shortest path matrix is:
+Start with the **adjacency matrix**, where:
 
-From / To	0	1	2	3
-0	        0	3	5	6
-1	        5	0	2	3
-2	        3	6	0	1
-3	        2	5	7	0
+- `graph[i][j]` = weight of edge i → j  
+- `INF` (large number like `99999`) = no edge between i and j  
+- `dist = graph` initially  
 
-This shows the shortest distances between every pair of vertices.
+### 2️⃣ Iterative Updates
 
-Advantages
--
--Simple and elegant algorithm based on dynamic programming.
--Works for both directed and undirected graphs.
--Capable of detecting negative edge weights (but not negative cycles).
+For each vertex **k** (as intermediate):
 
-Limitations
--
--Inefficient for very large graphs because of its O(V³) time complexity.
--Cannot handle graphs that contain negative weight cycles.
+- Check **every pair (i, j)**  
+- If going **i → k → j** is shorter than the current path **i → j**  
+  → **update** the distance
 
-Time and Space Complexity
--
--Time Complexity: O(V³), due to three nested loops.
--Space Complexity: O(V²), since it maintains a 2D distance matrix.
+### 3️⃣ Final Output
 
-Applications
--
--Used in network routing to find optimal paths between all routers.
--Helps in social network analysis for computing closeness between users.
--Useful in geographical mapping systems and transport networks.
+After all updates, `dist[i][j]` contains the shortest path between every pair of vertices.
 
-Conclusion
--
-The Floyd–Warshall algorithm is an efficient and widely used method for finding the shortest paths between all pairs of nodes in a weighted graph.
-Its simplicity and reliability make it a core algorithm in computer science, especially in graph theory, operations research, and network optimization.
+---
+
+## 📌 Example
+
+### Input graph (4 vertices)
+
+| From / To | 0 | 1 | 2 | 3 |
+|-----------|---|---|---|---|
+| **0** | 0 | 3 | ∞ | 7 |
+| **1** | 8 | 0 | 2 | ∞ |
+| **2** | 5 | ∞ | 0 | 1 |
+| **3** | 2 | ∞ | ∞ | 0 |
+
+### Result after Floyd–Warshall:
+
+| From / To | 0 | 1 | 2 | 3 |
+|-----------|---|---|---|---|
+| **0** | 0 | 3 | 5 | 6 |
+| **1** | 5 | 0 | 2 | 3 |
+| **2** | 3 | 6 | 0 | 1 |
+| **3** | 2 | 5 | 7 | 0 |
+
+Shows the **shortest distances** between all vertex pairs.
+
+---
+
+## 📌 Advantages
+
+✔ Simple, elegant, and easy to implement  
+✔ Works for **directed** and **undirected** graphs  
+✔ Supports **negative edge weights**  
+✔ Finds **all-pairs shortest paths** in a single run  
+
+---
+
+## 📌 Limitations
+
+✘ Slow for very large graphs (cubic time)  
+✘ Cannot be used if the graph contains **negative weight cycles**  
+
+---
+
+## 📌 Time & Space Complexity
+
+| Type | Complexity |
+|------|------------|
+| **Time** | O(V³) |
+| **Space** | O(V²) |
+
+---
+
+## 📌 Applications
+
+- Network routing (all-pairs optimal paths)  
+- Social network analysis (closeness metrics)  
+- Geographic mapping and logistics  
+- Transitive closure / reachability analysis  
+- Dynamic programming in optimization problems  
+
+---
+
+## 📌 Conclusion
+
+The Floyd–Warshall Algorithm is a powerful, reliable method for computing **all-pairs shortest paths**.  
+Its simplicity and versatility make it essential in:
+
+- Graph theory  
+- Operations research  
+- Network optimization  
+- Routing and navigation systems  
+
+Even though it may not be the fastest for very large sparse graphs, its clarity and completeness continue to make it a foundational algorithm in computer science.
+
