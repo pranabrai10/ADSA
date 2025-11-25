@@ -1,127 +1,201 @@
-B-Tree Implementation in C
-=
-This program implements a B-Tree, a balanced multiway search tree widely used in databases and file systems to store large amounts of data efficiently.
-A B-Tree of degree T is defined such that:
-   -Each node can contain at most (2T - 1) keys.
-   -Each node can have at most (2T) children.
-   -All leaf nodes appear at the same level.
-   -The keys in each node are stored in sorted order.
+# B-Tree Implementation in C
 
-A. Structure of a B-Tree Node
--
+This code implements a **B-Tree**, a balanced multiway search tree widely used in **databases**, **file systems**, and **indexing structures**.  
+B-Trees are optimized for systems that read and write large blocks of data (e.g., disks).
+
+For a B-Tree of **minimum degree T**:
+
+- Each node stores **at most (2T − 1) keys**
+- Each node has **at most (2T) children**
+- All leaf nodes appear at the **same level**
+- Keys in every node are stored in **sorted order**
+
+---
+
+## 📌 A. Structure of a B-Tree Node
+
+```c
 struct BTreeNode {
     int keys[2*T - 1];
     struct BTreeNode *children[2*T];
-    int n;      // Current number of keys
-    int leaf;   // 1 if leaf node, 0 otherwise
+    int n;      // current number of keys
+    int leaf;   // 1 = leaf node, 0 = internal node
 };
+```
 
-Each node in the B-Tree contains:
-     -keys[]: an array of sorted keys.
-     -children[]: pointers to child nodes.
-     -n: number of keys currently stored.
-     -leaf: a flag (1 or 0) indicating whether the node is a leaf node.
+Each node contains:
 
-B. Node Creation
--
-struct BTreeNode* createNode(int leaf)
-This function allocates memory for a new node, sets its leaf status, initializes key count n = 0, and sets all child pointers to NULL.
+- `keys[]` → sorted keys  
+- `children[]` → pointers to child nodes  
+- `n` → number of active keys  
+- `leaf` → flag indicating leaf / internal node  
 
-C. Splitting a Child Node
--
-void splitChild(struct BTreeNode* parent, int i, struct BTreeNode* y)
+---
 
-When a child node y becomes full (contains 2*T - 1 keys), it is split into two nodes:
-    -A new node z is created to hold the right half of y’s keys.
-    -The middle key from y is moved up into the parent node.
-    -The parent’s child pointers are adjusted to accommodate the new node.
+## 📌 B. Creating a Node
 
-This maintains the B-Tree’s properties by ensuring that no node exceeds its key limit.
+```c
+struct BTreeNode* createNode(int leaf);
+```
 
-D. Insertion
--
-struct BTreeNode* insert(struct BTreeNode* root, int key)
+This function:
 
-Insertion occurs in the following steps:
-    -If the root is NULL, create a new root node and insert the first key.
-    -If the root is full, split it into two nodes and create a new root.
-    -Use insertNonFull() to recursively find the correct leaf node for insertion.
+- Allocates memory for a new node  
+- Sets leaf status (`leaf = 1` or `0`)  
+- Initializes key count (`n = 0`)  
+- Sets all child pointers to `NULL`  
 
-E. Insertion into Non-Full Node
--
-void insertNonFull(struct BTreeNode* node, int key)
+---
 
--If the node is a leaf, the new key is inserted into the correct position (keeping the keys sorted).
--If the node is internal, the function finds the appropriate child and recursively inserts the key there.
+## 📌 C. Splitting a Child Node
 
-If the child becomes full, splitChild() is called before continuing.
+```c
+void splitChild(struct BTreeNode* parent, int i, struct BTreeNode* y);
+```
 
-F. Deletion (Simplified)
--
-void removeFromNode(struct BTreeNode* node, int key)
+When a child node `y` becomes **full** (`2T − 1` keys):
 
-This basic version supports deletion only from leaf nodes:
-1.If the key is present in a leaf node, it is simply removed.
-2.If the key is not found and the current node is a leaf, a message is displayed saying the key does not exist.
-3.If the key is in an internal node, a message indicates that complex internal deletion is not implemented.
+1. A new node `z` is created to hold the **right half** of `y`’s keys  
+2. The **middle key** in `y` is moved up into the parent  
+3. Parent’s child pointers are adjusted  
+4. The overfilled node is reduced to valid size  
 
-G. Printing the B-Tree
--
-void printBTree(struct BTreeNode* root, int level)
+This guarantees that **no node grows beyond its maximum allowed keys**.
 
-This recursive function prints the contents of the B-Tree level by level:
-     -Displays all keys in the current node.
-     -Recursively prints all child nodes, each time increasing the level number.
-This helps visualize the hierarchical structure of the B-Tree.
+---
 
-H. Main Function
--
-The main() function provides a menu-driven interface allowing users to:
-1.Insert a key
-2.Delete a key (if it exists in a leaf node)
-3.Print the B-Tree structure
-4.Exit the program
+## 📌 D. Insertion
 
-The program continues to execute until the user chooses to exit.
+```c
+struct BTreeNode* insert(struct BTreeNode* root, int key);
+```
 
-I. Example Run
--
+Insertion steps:
+
+1. If tree is empty → create root  
+2. If root is full → split root and create a new root  
+3. Use `insertNonFull()` to insert into a valid node  
+
+---
+
+## 📌 E. Insertion Into a Non-Full Node
+
+```c
+void insertNonFull(struct BTreeNode* node, int key);
+```
+
+- If node is **leaf** → shift keys and insert key in sorted order  
+- If node is **internal** → find child to recurse into  
+- Before descending, if child is full → split the child  
+
+This ensures insertion **never enters a full node**.
+
+---
+
+## 📌 F. Deletion (Basic Version)
+
+```c
+void removeFromNode(struct BTreeNode* node, int key);
+```
+
+This simplified implementation supports only:
+
+### 🔸 Deletion from leaf nodes
+Steps:
+
+1. If key exists in a leaf → remove it  
+2. If key not found in a leaf → print message  
+3. If key is in an internal node → program reports advanced deletion not implemented  
+
+Full B-Tree deletion (merge/borrow operations) is complex, so this demo implements only the essential part.
+
+---
+
+## 📌 G. Printing the B-Tree
+
+```c
+void printBTree(struct BTreeNode* root, int level);
+```
+
+Prints:
+
+- Current level (depth in tree)  
+- All keys in each node  
+- Recursively prints children  
+
+This helps visualize the multi-level structure clearly.
+
+---
+
+## 📌 H. Main Program (Menu-Driven)
+
+Users can:
+
+1. Insert a key  
+2. Delete a key (only if in leaf)  
+3. Print B-Tree structure  
+4. Exit  
+
+Program runs continuously until “Exit” is chosen.
+
+---
+
+## 📌 I. Example Run
+
+```
 B-Tree Operations:
 1. Insert
 2. Delete (only leaf keys)
 3. Print B-Tree
 4. Exit
+
 Enter your choice: 1
 Enter key to insert: 10
+
 Enter your choice: 1
 Enter key to insert: 20
+
 Enter your choice: 1
 Enter key to insert: 5
+
 Enter your choice: 3
 B-Tree structure:
-Level 0: 10 
-Level 1: 5 20 
+Level 0: 10
+Level 1: 5 20
+
 Enter your choice: 2
 Enter key to delete: 5
 Deleted key 5
+
 Enter your choice: 3
 B-Tree structure:
-Level 0: 10 
-Level 1: 20 
+Level 0: 10
+Level 1: 20
+
 Enter your choice: 4
 Exiting...
+```
 
-J. Key Characteristics of B-Tree
--
-Property	                                  Description
-Balanced Tree	            Height grows logarithmically with number of elements.
-Multiple Keys per Node	  Each node can hold several keys, reducing tree height.
-Efficient Search	                  Searching takes O(log n) time.
-Used in Databases	        Ideal for disk-based storage due to minimal disk reads.
+---
 
-K. Conclusion
--
-This program demonstrates the fundamental working of a B-Tree data structure in C:
-     -Supports insertion and simple deletion.
-     -Ensures balance and efficient search through splitting.
-     -Prints the tree structure for easy visualization.
+## 📌 J. Key Characteristics of B-Trees
+
+| Property | Description |
+|----------|-------------|
+| **Balanced Tree** | All leaf nodes appear at same level |
+| **Multiple Keys per Node** | Reduces height dramatically |
+| **Efficient Search** | O(log n) search, insertion, deletion |
+| **Ideal for Disk Storage** | Minimizes disk I/O operations |
+
+---
+
+## 📌 K. Conclusion
+
+This program demonstrates the **core functionality** of a B-Tree:
+
+- Balanced multiway search  
+- Efficient insertion and simple deletion  
+- Proper splitting of full nodes  
+- Tree visualization for understanding structure  
+
+B-Trees are fundamental to **databases, indexing engines, and file systems**, making this implementation an excellent educational foundation.
