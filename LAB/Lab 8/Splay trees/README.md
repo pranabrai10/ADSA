@@ -1,6 +1,6 @@
 # Splay Tree – C Implementation (Menu Driven)
 
-This project implements a **Splay Tree** data structure in **C**, including all major operations such as:
+This code implements a **Splay Tree** data structure in **C**, including all major operations such as:
 
 - Insert  
 - Search  
