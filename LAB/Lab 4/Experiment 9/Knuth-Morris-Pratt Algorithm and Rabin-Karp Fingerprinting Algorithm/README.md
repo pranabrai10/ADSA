@@ -1,66 +1,116 @@
-KMP and Rabin–Karp String Matching Algorithms
-=
-Aim
--
-To implement the Knuth–Morris–Pratt (KMP) Algorithm and the Rabin–Karp Fingerprinting Algorithm for efficient pattern searching in strings.
+# KMP and Rabin–Karp String Matching Algorithms – C Implementation
 
-Objective
--
-To search for occurrences of a given pattern within a text using efficient string-matching algorithms that reduce unnecessary comparisons.
+This code implements two efficient pattern-searching algorithms:
 
-1.Knuth–Morris–Pratt (KMP) Algorithm
--
--KMP improves the naive string search by avoiding re-comparisons.
--It preprocesses the pattern to build an LPS (Longest Prefix Suffix) array.
--The LPS array indicates the longest proper prefix of the pattern that is also a suffix — helping to skip unnecessary checks.
+1. **Knuth–Morris–Pratt (KMP) Algorithm**  
+2. **Rabin–Karp Fingerprinting Algorithm**
 
-Time Complexity:
--
--Preprocessing: O(m)
--Searching: O(n)
--Overall: O(m + n)
-(where m = length of pattern, n = length of text)
+Both are designed to locate occurrences of a pattern within a text while avoiding unnecessary character comparisons.
 
-2.Rabin–Karp Fingerprinting Algorithm
--
--Uses a hash function to compute a numeric value (fingerprint) for the pattern and substrings of the text.
--If the hash values match, a direct comparison is made to confirm the match.
--Ideal for multiple pattern searches.
+---
 
-Time Complexity:
--
--Average case: O(n + m)
--Worst case: O(nm) (if many hash collisions occur)
+## 📌 Aim
 
-Algorithm Steps
--
-Knuth–Morris–Pratt (KMP)
--
-1.Compute the LPS array for the pattern.
-2.Compare characters of the text and pattern.
-3.If mismatch occurs, shift the pattern based on LPS value (no re-checking of previous characters).
-4.Continue until the pattern is found or text ends.
+To implement fast and efficient string matching using KMP and Rabin–Karp algorithms.
 
-Rabin–Karp
--
-1.Compute hash value for the pattern and the first substring of text.
-2.Slide the window by one character at a time and update the hash using the rolling hash formula.
-3.If hash values match, compare the actual strings to confirm.
-4.Continue until all matches are found.
+---
 
-Example
--
-Input
+## 📌 Objective
+
+- Efficiently search for pattern occurrences inside a text  
+- Reduce redundant comparisons found in naive matching  
+- Demonstrate two different optimization techniques:  
+  - Prefix-based skipping (KMP)  
+  - Rolling hash (Rabin–Karp)
+
+---
+
+## 📌 1. Knuth–Morris–Pratt (KMP) Algorithm
+
+KMP avoids re-checking characters by preprocessing the pattern.
+
+### 🔹 Key Idea
+Build an **LPS (Longest Prefix-Suffix)** array indicating the longest proper prefix that is also a suffix.  
+This allows skipping ahead on mismatches without repeating comparisons.
+
+### 🔹 Complexity
+| Phase | Time |
+|-------|------|
+| Preprocessing LPS | O(m) |
+| Pattern Searching | O(n) |
+| **Total** | **O(n + m)** |
+
+Where:
+
+- **m** = pattern length  
+- **n** = text length  
+
+---
+
+## 📌 2. Rabin–Karp Fingerprinting Algorithm
+
+Uses hashing to compare numeric fingerprints rather than characters.
+
+### 🔹 Key Idea
+- Compute hash for the pattern  
+- Compute rolling hash for each window of the text  
+- If hash matches → verify by character comparison  
+
+Useful for **multiple pattern matching**.
+
+### 🔹 Complexity
+| Case | Time |
+|-------|-------|
+| Average-case | O(n + m) |
+| Worst-case | O(nm) (when collisions occur) |
+
+---
+
+## 📌 Algorithm Steps
+
+### 🔹 Knuth–Morris–Pratt (KMP)
+1. Build the **LPS array**  
+2. Compare pattern with text  
+3. On mismatch → use LPS to shift pattern without rechecking  
+4. Continue until pattern is found or text ends  
+
+---
+
+### 🔹 Rabin–Karp
+1. Compute initial hash of pattern and first window of text  
+2. Slide window one step at a time  
+3. Update hash using rolling hash formula  
+4. If hash matches → verify substring  
+5. Continue scanning to find all matches  
+
+---
+
+## 📌 Example
+
+### **Input**
+```
 Enter the text: ABABDABACDABABCABAB
 Enter the pattern: ABABCABAB
+```
 
-Output
+### **Output**
+```
 --- Knuth-Morris-Pratt (KMP) Algorithm ---
 Pattern found at index 10
 
 --- Rabin-Karp Fingerprinting Algorithm ---
 Pattern found at index 10
+```
 
-Result
--
-Both the KMP and Rabin–Karp algorithms successfully locate the pattern in the given text efficiently.
+---
+
+## 📌 Result
+
+Both KMP and Rabin–Karp efficiently locate the pattern in the given text.  
+Each algorithm uses a different strategy:
+
+- **KMP** → avoids redundant comparisons using LPS  
+- **Rabin–Karp** → speeds up matching using rolling hash  
+
+Together, they demonstrate two classic approaches to fast string matching.
+
