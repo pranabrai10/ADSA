@@ -1,116 +1,150 @@
-Ellipsoid Method
-=
-Overview
--
-This program implements the Ellipsoid Algorithm, a geometric method used to test whether a Linear Programming (LP) system is feasible.
-The goal is to find a point x such that:
-    Ax≤b
+# Ellipsoid Method – C Implementation
 
-The ellipsoid algorithm works by repeatedly shrinking an ellipsoid that contains the feasible region until a feasible point is found (or until the ellipsoid becomes too small).
+This code implements the **Ellipsoid Algorithm**, a geometric iterative method used to test the **feasibility** of a Linear Programming (LP) system of inequalities:
 
-Objective
--
-To provide a simple C implementation that checks LP feasibility using the ellipsoid method by:
+\[
+Ax \le b
+\]
 
--Starting with a large ellipsoid that contains the solution
--Identifying a violated constraint
--Cutting the ellipsoid using a separating hyperplane
--Updating the ellipsoid’s center and shape
--Repeating until feasibility is detected
+The ellipsoid method shrinks an enclosing ellipsoid step-by-step until either:
 
-This code focuses on learning, not industrial-scale optimization.
+- A feasible point is found, or  
+- The ellipsoid becomes too small (maximum iterations reached)
 
-Concept
--
+This implementation focuses on **education and understanding**, not industrial-scale optimization.
+
+---
+
+## 📌 Features
+
+### ✔ User-Level Capability
+| Operation | Description |
+|-----------|-------------|
+| **LP Feasibility Check** | Determines whether there exists an \( x \) such that \( Ax \le b \) |
+| **Iterative Ellipsoid Updates** | Adjusts center and shape matrix each iteration |
+| **Constraint Violation Detection** | Identifies most violated constraint |
+| **Progress Logging** | Shows iteration updates and feasibility results |
+
+---
+
+## 📌 Concept Overview
+
 The ellipsoid method maintains an ellipsoid:
 
-E={x:(x−c)^TH^(−1)(x−c)≤1}
+\[
+E = \{ x \mid (x - c)^T H^{-1} (x - c) \le 1 \}
+\]
 
-where:
--c = center
--H = shape matrix
+Where:
 
-Each iteration:
+- **\( c \)** = center  
+- **\( H \)** = shape matrix (positive definite)
 
--Check whether the current center c satisfies all constraints.
--If a constraint is violated, use it as a separating hyperplane.
--Update the ellipsoid by:
-    -Moving the center
-    -Shrinking the ellipsoid using a mathematical update rule
+### Each iteration:
 
-The feasible region is guaranteed to remain inside the new ellipsoid.
+1. Check if the center satisfies all constraints.  
+2. If a constraint \( a_i^T x \le b_i \) is violated:
+   - Compute the separating hyperplane direction  
+   - Update the ellipsoid center  
+   - Update the shape matrix  
+3. Continue until feasibility or until iteration limit reaches.
 
-The algorithm terminates when:
--A feasible point is found, or
--The maximum number of iterations is reached.
+---
 
-Major Components
--
-1. Feasibility Check
+## 📌 Major Components
 
-For each constraint (ai)^Tx≤bi, compute:
+### 🔹 1. Constraint Feasibility Check
+For each inequality:
 
-    (ai)^Tx−bi
+\[
+a_i^T x - b_i
+\]
 
-The constraint with the largest violation is used to cut the ellipsoid.
+The algorithm picks the **most violated constraint** and cuts the ellipsoid with it.
 
-2. Separating Hyperplane
+---
 
-The violated constraint defines a direction a, which is normalized using:
+### 🔹 2. Separating Hyperplane
+From the violated constraint, compute vector:
 
-g=a/(sqrt{(a^THa)​})
+\[
+g = \frac{a}{\sqrt{a^T H a}}
+\]
 
-This ensures correct scaling relative to the ellipsoid geometry.
+This normalizes the inequality relative to the ellipsoid geometry.
 
-3. Center Update
+---
 
-The center moves opposite to the violated direction:
+### 🔹 3. Center Update
+Move the ellipsoid center in the opposite direction of violation:
 
-x′=x−(1/(n+1))Hg
+\[
+x' = x - \frac{1}{n+1} H g
+\]
 
-This shifts the ellipsoid toward the feasible region.
+This ensures the new center moves toward the feasible region.
 
-4. Shape Matrix Update
+---
 
-The ellipsoid shrinks according to:
+### 🔹 4. Shape Matrix Update
+Shrink the ellipsoid:
 
-H′=(n^2/((n^2)-1))(H−(2/(n+1)Hgg^TH)
+\[
+H' = \frac{n^2}{n^2 - 1} \left( H - \frac{2}{n+1} Hg g^T H \right)
+\]
 
-This ensures the new ellipsoid still contains the feasible region.
+This guarantees the new ellipsoid still contains the feasible region.
 
-Algorithm Steps
--
-1.Input matrix A and vector b.
-2.Choose initial radius R and set:
-    -center = 0
-    -shape = (R^2)I (ball of radius R)
-3.Test feasibility of the center.
-4.If violated:
-    -Compute separating hyperplane
-    -Update center
-    -Update ellipsoid shape
-5.Repeat for up to MAX_ITERS iterations.
-6.If a feasible point is found, print it.
+---
 
-Data Structures Used
--
--2D array for matrix A
--1D arrays for vectors x, b, g, and temporary computations
--2D arrays for H (shape matrix) and newH
--Basic floating-point operations and linear algebra
+## 📌 Algorithm Steps
 
-Advantages
--
--Works for any LP feasibility check Ax≤b
--Does not require simplex tableaux
--Always stays inside a bounding ellipsoid
--Guarantees polynomial-time complexity (theoretical)
--Good educational example of convex optimization
+1. Input matrix **A** and vector **b**  
+2. Choose initial radius **R**  
+3. Initialize:
+   - **center = 0**  
+   - **shape = (R²)I** (ball of radius R)  
+4. Check whether center satisfies **Ax ≤ b**  
+5. If violated:
+   - Compute separating hyperplane  
+   - Update center  
+   - Update shape matrix  
+6. Repeat for **MAX_ITERS**  
+7. Output feasible point if found
 
-Limitations
--
--Slow in practice compared to Simplex or Interior Point Methods
--Sensitive to numerical precision
--Requires initial bounding radius R
--Feasible region must be bounded inside the initial ellipsoid
--Only checks feasibility, does not optimize an objective function
+---
+
+## 📌 Data Structures Used
+
+| Component | Structure |
+|-----------|-----------|
+| Matrix A | 2D array |
+| Vector b | 1D array |
+| Ellipsoid center | 1D array |
+| Gradient direction \( g \) | 1D array |
+| Shape matrix \( H \) | 2D array |
+| New shape matrix \( H' \) | 2D array |
+| Temporary arrays | 1D/2D floats |
+
+Basic floating-point linear algebra is used throughout.
+
+---
+
+## 📌 Advantages
+
+- Works for **any LP feasibility check** \( Ax \le b \)  
+- Does not require simplex or interior-point machinery  
+- Operates entirely inside a bounding ellipsoid  
+- Theoretically **polynomial time**  
+- Excellent educational example for convex optimization  
+
+---
+
+## 📌 Limitations
+
+- Slower in practice than Simplex or Interior Point methods  
+- Sensitive to floating-point numerical stability  
+- Requires a **correct bounding ellipsoid radius**  
+- Feasible region must lie inside the initial ellipsoid  
+- Only checks **feasibility**, does *not* optimize an objective function  
+
