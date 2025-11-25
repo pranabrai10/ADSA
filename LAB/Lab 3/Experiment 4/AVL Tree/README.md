@@ -1,138 +1,197 @@
-AVL Tree Implementation
-=
-This program implements an AVL Tree, which is a self-balancing Binary Search Tree (BST).
-In an AVL Tree, the height difference (balance factor) between the left and right subtrees of any node is at most 1.
+# AVL Tree – Self-Balancing Binary Search Tree (C Implementation)
 
-This property ensures that insertion and deletion operations always maintain a logarithmic time complexity — O(log n).
+This code implements an **AVL Tree**, a self-balancing Binary Search Tree (BST).  
+In an AVL Tree, the **height difference** (balance factor) between the left and right subtrees of every node is **never more than 1**.
 
-A. Node Structure
--
+This balancing ensures that:
+
+- Insertion → O(log n)  
+- Deletion → O(log n)  
+- Search → O(log n)  
+
+making AVL trees highly efficient for ordered data operations.
+
+---
+
+## 📌 A. Node Structure
+
+```c
 struct Node {
     int key;
     struct Node *left, *right;
     int height;
 };
+```
 
-Each node stores:
--key → the data value
--left and right → pointers to child nodes
--height → height of the subtree rooted at that node
+Each node contains:
 
-B. Utility Functions
--
-1. height()
+- `key` → stored value  
+- `left`, `right` → child pointers  
+- `height` → height of subtree rooted at the node  
 
-Returns the height of a node (0 for NULL nodes).
+---
+
+## 📌 B. Utility Functions
+
+### 🔹 1. `height()`
+Returns height of a node (0 for NULL):
+
+```c
 int height(struct Node *node) {
     return (node == NULL) ? 0 : node->height;
 }
+```
 
-2. max()
-Helper function to find the maximum of two integers.
+### 🔹 2. `max()`
+Returns the maximum of two integers — used to update node heights.
 
-3. getBalance()
-Calculates the balance factor of a node:
-Balance Factor = height(left subtree) - height(right subtree)
+### 🔹 3. `getBalance()`
+Computes balance factor:
 
-If:
--balance > 1 → left heavy
--balance < -1 → right heavy
+```
+Balance = height(left subtree) – height(right subtree)
+```
 
-C. Rotations (Balancing the Tree)
--
-When the balance factor exceeds ±1, the tree needs rotation to restore balance.
+Meaning:
 
-1. Right Rotation (LL Case)
-Applied when a node is left-heavy due to an insertion in its left subtree.
+- `> +1` → **Left heavy**
+- `< −1` → **Right heavy**
 
-2. Left Rotation (RR Case)
-Applied when a node is right-heavy due to an insertion in its right subtree.
+This value determines whether rotations are needed.
 
-3. Left-Right Rotation (LR Case)
-Applied when insertion happens in the right subtree of the left child.
+---
 
-Performed as:
-Left Rotation on left child → Right Rotation on node
+## 📌 C. Rotations (Balancing Cases)
 
-4. Right-Left Rotation (RL Case)
-Applied when insertion happens in the left subtree of the right child.
+When a node’s balance exceeds ±1, the AVL tree performs rotations.
 
-Performed as:
-Right Rotation on right child → Left Rotation on node
+### 🔹 1. Right Rotation — **LL Case**
+Used when the node becomes left-heavy due to insertion in left subtree.
 
-These rotations ensure that the tree remains balanced after every insertion or deletion.
+### 🔹 2. Left Rotation — **RR Case**
+Used when the node becomes right-heavy due to insertion in right subtree.
 
-D. Insertion
--
-The insert() function:
-1.Recursively inserts the new key in the correct position (as in a normal BST).
-2.Updates the height of each ancestor node.
-3.Calculates the balance factor of the node.
-4.Performs appropriate rotation(s) if the balance factor becomes unbalanced (±2).
+### 🔹 3. Left-Right Rotation — **LR Case**
+Steps:
+1. Left Rotation on the **left child**  
+2. Right Rotation on the **node**
 
-Balance Cases in Insertion:
+### 🔹 4. Right-Left Rotation — **RL Case**
+Steps:
+1. Right Rotation on the **right child**  
+2. Left Rotation on the **node**
 
-Case	         v             Condition	                                           Rotation
-Left-Left (LL)	      balance > 1 && key < node->left->key	                    Right Rotate
-Right-Right (RR)	    balance < -1 && key > node->right->key	                  Left Rotate
-Left-Right (LR)	      balance > 1 && key > node->left->key	     Left Rotate (left child) → Right Rotate
-Right-Left (RL)	      balance < -1 && key < node->right->key	   Right Rotate (right child) → Left Rotate
+These rotations restore AVL balance and maintain O(log n) height.
 
-E. Deletion
--
-The deleteNode() function:
-1.Performs standard BST deletion (three cases):
-      -Node with no children → simply remove it.
-      -Node with one child → replace it with its child.
-      -Node with two children → replace its key with its inorder successor (smallest value in right subtree).
-2.Updates the height of nodes.
-3.Checks balance factor and performs necessary rotations to restore balance.
+---
 
-Balance Cases in Deletion:
+## 📌 D. Insertion Operation
 
-Case	                 Condition	                                              Rotation
-Left-Left	           balance > 1 && getBalance(left) >= 0	                    Right Rotate
-Left-Right	         balance > 1 && getBalance(left) < 0	     Left Rotate (left child) → Right Rotate
-Right-Right	         balance < -1 && getBalance(right) <= 0	                  Left Rotate
-Right-Left	         balance < -1 && getBalance(right) > 0	   Right Rotate (right child) → Left Rotate
+The `insert()` function:
 
-F. User Interaction (Main Function)
--
-The main() function provides a menu-driven interface:
-    -Option 1 → Insert a new value
-    -Option 2 → Delete a value
-    -Option 3 → Exit the program
-It continuously accepts user choices until the user selects “Exit”.
+1. Inserts the node like a normal BST  
+2. Updates node heights  
+3. Computes balance factor  
+4. Performs necessary rotations  
 
-G. Key Features
--
-  -Self-balancing BST (AVL property)
-  -Automatic rotations after insertions or deletions
-  -Efficient O(log n) search, insertion, and deletion
-  -Menu-driven program for easy interaction
+### 🔹 Insertion Cases
 
-H. Sample Run
--
+| Case | Condition | Rotation |
+|------|-----------|----------|
+| **LL** | balance > 1 and key < left->key | Right Rotate |
+| **RR** | balance < -1 and key > right->key | Left Rotate |
+| **LR** | balance > 1 and key > left->key | Left Rotate (left child), then Right Rotate |
+| **RL** | balance < -1 and key < right->key | Right Rotate (right child), then Left Rotate |
+
+---
+
+## 📌 E. Deletion Operation
+
+The `deleteNode()` function:
+
+1. Performs standard BST deletion  
+   - No child → remove  
+   - One child → replace by child  
+   - Two children → replace with inorder successor  
+2. Updates heights  
+3. Checks balance factor  
+4. Applies required rotation(s)
+
+### 🔹 Deletion Cases
+
+| Case | Condition | Rotation |
+|------|-----------|----------|
+| **LL** | balance > 1 and left subtree is balanced | Right Rotate |
+| **LR** | balance > 1 and left subtree is right-heavy | Left Rotate → Right Rotate |
+| **RR** | balance < -1 and right subtree is balanced | Left Rotate |
+| **RL** | balance < -1 and right subtree is left-heavy | Right Rotate → Left Rotate |
+
+---
+
+## 📌 F. User Interaction (Menu-Driven)
+
+The `main()` function provides:
+
+- Option 1 → Insert value  
+- Option 2 → Delete value  
+- Option 3 → Exit  
+
+The program continues until the user selects **Exit**.
+
+---
+
+## 📌 G. Key Features
+
+✔ Self-balancing BST  
+✔ Rotations automatically maintain balance  
+✔ Efficient **O(log n)** operations  
+✔ Fully menu-driven  
+✔ Supports insertion and deletion  
+✔ Maintains minimal height at all times  
+
+---
+
+## 📌 H. Sample Run
+
+```
 AVL Tree Operations:
 1. Insert
 2. Delete
 3. Exit
+
 Enter your choice: 1
 Enter value to insert: 10
+
 Enter your choice: 1
 Enter value to insert: 20
+
 Enter your choice: 1
 Enter value to insert: 30
+
 Enter your choice: 2
 Enter value to delete: 20
+
 Enter your choice: 3
 Exiting...
+```
 
-I. Conclusion
--
-This program efficiently implements an AVL Tree that:
-    -Automatically maintains balance during insertions and deletions,
-    -Ensures minimal height,
-    -Guarantees logarithmic time complexity for major operations.
+---
 
-It is a foundational concept in Data Structures used in applications like databases, search engines, and memory management systems.
+## 📌 I. Conclusion
+
+This program demonstrates a complete AVL Tree with:
+
+- Automatic height-balancing  
+- Rotation-based corrections  
+- Guaranteed O(log n) performance  
+
+AVL Trees are widely used in:
+
+- Databases  
+- File systems  
+- Search engines  
+- Memory managers  
+
+because they maintain a tightly controlled height at all times.
+
+
