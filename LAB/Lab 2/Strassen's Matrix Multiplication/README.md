@@ -29,9 +29,9 @@ Strassen reduces this to **7 multiplications**, significantly improving performa
 
 ### 🔹 1. Divide Matrices into Submatrices
 
-For an \( n \times n \) matrix, where \( n \) is a power of 2, the matrices are divided into four equal-sized submatrices as follows:
+For an ( n times n ) matrix, where ( n ) is a power of 2, the matrices are divided into four equal-sized submatrices as follows:
 
-```math
+
 A =
 \begin{bmatrix}
 A_{11} & A_{12} \\
