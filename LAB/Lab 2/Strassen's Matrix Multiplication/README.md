@@ -31,15 +31,16 @@ Strassen reduces this to **7 multiplications**, significantly improving performa
 
 For an \(n times n\) matrix (where (n) is a power of 2):
 
-\[
-A = 
-A_{11} & A_{12} \\
+A = [
+A_{11} & A_{12}
+
 A_{21} & A_{22}
 
-B =
-B_{11} & B_{12} \\
+B ={
+B_{11} & B_{12}
+
 B_{21} & B_{22}
-\]
+]
 
 ---
 
