@@ -40,16 +40,12 @@ Given:
 
 \[
 A =
-\begin{bmatrix}
 A_{11} & A_{12} \\
 A_{21} & A_{22}
-\end{bmatrix},
-\qquad
+
 B =
-\begin{bmatrix}
 B_{11} & B_{12} \\
 B_{21} & B_{22}
-\end{bmatrix}
 \]
 
 Naive divide-and-conquer uses **8 multiplications**.
@@ -59,26 +55,31 @@ Strassen reduces this to **7 multiplications**:
 ### 🔹 Strassen’s 7 Products
 
 \[
-\begin{aligned}
 M_1 &= (A_{11}+A_{22})(B_{11}+B_{22}) \\
+
 M_2 &= (A_{21}+A_{22})B_{11} \\
+
 M_3 &= A_{11}(B_{12}-B_{22}) \\
+
 M_4 &= A_{22}(B_{21}-B_{11}) \\
+
 M_5 &= (A_{11}+A_{12})B_{22} \\
+
 M_6 &= (A_{21}-A_{11})(B_{11}+B_{12}) \\
+
 M_7 &= (A_{12}-A_{22})(B_{21}+B_{22})
-\end{aligned}
 \]
 
 ### 🔹 Final Matrix C = A × B
 
 \[
-\begin{aligned}
 C_{11} &= M_1 + M_4 - M_5 + M_7 \\
+
 C_{12} &= M_3 + M_5 \\
+
 C_{21} &= M_2 + M_4 \\
+
 C_{22} &= M_1 - M_2 + M_3 + M_6
-\end{aligned}
 \]
 
 ---
