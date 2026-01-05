@@ -29,23 +29,17 @@ Strassen reduces this to **7 multiplications**, significantly improving performa
 
 ### 🔹 1. Divide Matrices into Submatrices
 
-For an \(n \times n\) matrix (where \(n\) is a power of 2):
+For an \(n times n\) matrix (where (n) is a power of 2):
 
 \[
 A = 
-\begin{bmatrix}
 A_{11} & A_{12} \\
 A_{21} & A_{22}
-\end{bmatrix},
-\quad
+
 B =
-\begin{bmatrix}
 B_{11} & B_{12} \\
 B_{21} & B_{22}
-\end{bmatrix}
 \]
-
-Each block is of size \(\frac{n}{2} \times \frac{n}{2}\).
 
 ---
 
