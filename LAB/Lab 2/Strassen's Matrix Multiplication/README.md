@@ -33,16 +33,13 @@ For an ( n times n ) matrix, where ( n ) is a power of 2, the matrices are divid
 
 
 A =
-\begin{bmatrix}
 A_{11} & A_{12} \\
 A_{21} & A_{22}
-\end{bmatrix},
-\quad
+
 B =
-\begin{bmatrix}
 B_{11} & B_{12} \\
 B_{21} & B_{22}
-\end{bmatrix}
+
 
 ---
 
