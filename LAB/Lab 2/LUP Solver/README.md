@@ -3,7 +3,7 @@
 This program performs **LUP decomposition** on a square matrix **A** and uses it to solve the linear system:
 
 \[
-A \cdot x = b
+Ax = b
 \]
 
 It decomposes the matrix into:
@@ -14,8 +14,8 @@ It decomposes the matrix into:
 
 Then it solves the system in two phases:
 
-1. **Forward substitution:** solve \(L \cdot y = P \cdot b\)  
-2. **Backward substitution:** solve \(U \cdot x = y\)
+1. **Forward substitution:** solve \(Ly = Pb)  
+2. **Backward substitution:** solve \(Ux = y)
 
 The final output is the solution vector **x**.
 
@@ -42,7 +42,7 @@ LUP decomposition is one of the most stable and widely used numerical methods fo
 Factor a matrix:
 
 \[
-P \cdot A = L \cdot U
+PA = LU
 \]
 
 Where:
@@ -70,7 +70,7 @@ This prevents:
 Solves the system:
 
 \[
-L \cdot y = P \cdot b
+Ly = Pb
 \]
 
 Since **L is lower triangular**, compute:
@@ -91,7 +91,7 @@ This produces an intermediate vector **y**.
 Solve:
 
 \[
-U \cdot x = y
+Ux = y
 \]
 
 Since **U is upper triangular**, solve from bottom to top:
